@@ -34,7 +34,6 @@ const postRouter = require('./routes/postRouter');
 const authorRouter = require('./routes/authorRouter');
 const novelRouter = require('./routes/novelRouter');
 const gAuthRouter = require('./routes/googleAuthRouter')
-const chatBotRouter = require('./routes/chatBotRouter');
 const chapterRouter = require('./routes/chapterRouter');
 const novelReviewsRouter = require('./routes/novelReviewsRouter');
 
@@ -45,7 +44,6 @@ app.use('/api/users', userRouter);
 app.use('/api/posts', postRouter);
 app.use('/api/authors', authorRouter);
 app.use('/api/novels', novelRouter);
-app.use('/api/chatbot', chatBotRouter);
 app.use('/api/chapters', chapterRouter);
 app.use('/api/novel-reviews', novelReviewsRouter);
 

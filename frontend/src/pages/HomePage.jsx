@@ -4,7 +4,6 @@ import DisplayBooks from "../components/DisplayBooks";
 import Interests from "../components/Interests";
 import DarkModeContext from "../context/DarkModeContext";
 import LoadingScreen from "../utils/LoadingScreen";
-import Chatbot from "../components/Chatbot";
 import Footer from "../utils/Footer";
 
 function HomePage() {
@@ -40,7 +39,6 @@ function HomePage() {
             </div>
           </main>
           <Footer />
-          <Chatbot />
         </>
       )}
     </div>

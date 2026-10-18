@@ -16,7 +16,6 @@
 - [Installation](#installation)
 - [Usage](#usage)
 - [Routes Overview](#routes-overview)
-- [AI Chatbot (Novik)](#ai-chatbot-novik)
 - [Contribution](#contribution)
 
 ---
@@ -40,10 +39,6 @@
 - Protect user privacy with no data sharing.
 - Users can request data deletion via support.
 
-### AI Assistant:
-- Intelligent chatbot "Novik" to assist users with queries and navigation.
-- Clear, concise, and friendly responses.
-
 ---
 
 ## Prerequisites
@@ -52,7 +47,6 @@
 - MongoDB instance
 - Google OAuth credentials (if using Google login)
 - **Cloudinary** credentials (for image and video storage) 
-- **Gemini API Key** for AI chatbot
 ---
 
 ## Installation
@@ -85,7 +79,6 @@
    CLOUDINARY_CLOUD_NAME=cloudinary_cloud_name
    CLOUDINARY_API_KEY=cloudinary_api_key
    CLOUDINARY_API_SECRET=cloudinary_api_secret
-   GEMINI_API_KEY=gemini_api_key
    ```
    Create a `.env` file in the **frontend** root directory and add:
    ```env
@@ -138,26 +131,6 @@
 
 ### Error Handling:
 - `/*` - Displays a custom 404 page
-
----
-
-## AI Chatbot (Novik)
-
-Novik is an intelligent chatbot integrated into the application to assist users with:
-- Navigating the platform
-- Understanding features
-- Answering common queries
-
-**Behavior:**
-- Provides clear, concise responses.
-- Handles out-of-scope queries politely.
-- Does not share user data or provide irrelevant suggestions.
-
-**Example Queries:**
-- "Show me novels"
-- "Help with chapters"
-- "How to write review"
-- "Recommend novels"
 
 ---
 
