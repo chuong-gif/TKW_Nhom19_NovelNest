@@ -4,9 +4,9 @@
   <br />
   <br/>
 
-# Novel Hub
+# Novel Nest
 
-**Novel Hub** is a modern and user-friendly web application designed for avid novel readers and aspiring authors. This platform to foster a community of web novel enthusiasts, providing a platform for readers to engage in discussions, reviews, and ratings while allowing authors to publish and manage their works.
+**Novel Nest** is a modern and user-friendly web application designed for avid novel readers and aspiring authors. This platform to foster a community of web novel enthusiasts, providing a platform for readers to engage in discussions, reviews, and ratings while allowing authors to publish and manage their works.
 
 </div>
 
@@ -53,8 +53,8 @@
 
 1. **Clone the Repository:**
    ```bash
-   git clone https://github.com/chuong-gif/TKW_Nhom19_NovelHub.git
-   cd TKW_Nhom19_NovelHub
+   git clone https://github.com/chuong-gif/TKW_Nhom19_NovelNest.git
+   cd TKW_Nhom19_NovelNest
    ```
 
 2. **Open both the Directories:**
@@ -136,11 +136,11 @@
 
 ## Contribution
 
-We welcome contributions to enhance Novel Hub! To contribute:
+We welcome contributions to enhance Novel Nest! To contribute:
 1. Fork the repository.
 2. Create a new branch for your feature/bugfix.
 3. Submit a pull request with detailed explanations.
 
 ---
 
-Enjoy using **Novel Hub** and happy reading!
+Enjoy using **Novel Nest** and happy reading!
