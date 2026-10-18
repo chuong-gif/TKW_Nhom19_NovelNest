@@ -1,11 +1,11 @@
 import { useState, useEffect, useContext } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import axios from "axios";
 import Navbar from "../components/Navbar";
 import DarkModeContext from "../context/DarkModeContext";
 import { FaBookOpen, FaHeart } from "react-icons/fa";
 import Footer from "../utils/Footer";
+import api from "../services/api";
 
 const SearchResults = () => {
   const [searchParams] = useSearchParams();
@@ -36,10 +36,9 @@ const SearchResults = () => {
     const fetchResults = async () => {
       try {
         setLoading(true);
-        const API_URL = import.meta.env.VITE_API_URL;
 
         if (query && query.length >= 3) {
-          const response = await axios.get(`${API_URL}/novels/search`, {
+          const response = await api.get('/novels/search', {
             params: { query },
           });
           setResults(response.data);

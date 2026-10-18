@@ -1,5 +1,4 @@
 import { useState, useEffect, useContext } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Navbar from "../components/Navbar";
@@ -7,13 +6,11 @@ import DarkModeContext from "../context/DarkModeContext";
 import { FaHeart, FaBookOpen } from "react-icons/fa";
 import LoadingScreen from "../utils/LoadingScreen";
 import Footer from "../utils/Footer";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import api from "../services/api";
 
 const Rankings = () => {
   const [topNovels, setTopNovels] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
   const { isDarkMode } = useContext(DarkModeContext);
   const navigate = useNavigate();
 
@@ -35,13 +32,13 @@ const Rankings = () => {
   useEffect(() => {
     const fetchTopNovels = async () => {
       try {
-        const response = await axios.get(`${API_URL}/novels`);
+        const response = await api.get('/novels');
         const sortedNovels = response.data
           .sort((a, b) => (b.likes?.length || 0) - (a.likes?.length || 0))
           .slice(0, 10);
         setTopNovels(sortedNovels);
       } catch (err) {
-        setError("Failed to fetch rankings", err);
+        console.error("Failed to fetch rankings:", err);
       }
     };
 

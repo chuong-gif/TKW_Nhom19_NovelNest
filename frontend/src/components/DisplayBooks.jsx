@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef } from "react";
-import axios from "axios";
 import Book from "../utils/Book";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaChevronDown, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import api from "../services/api";
 
 const DisplayBooks = () => {
   const [novels, setNovels] = useState([]);
@@ -10,7 +10,6 @@ const DisplayBooks = () => {
   const [error, setError] = useState("");
   const [visibleRows, setVisibleRows] = useState(2);
   const [activeIndex, setActiveIndex] = useState(0);
-  const API_URL = import.meta.env.VITE_API_URL;
 
   // Grid settings
   const getGridSettings = () => {
@@ -36,7 +35,7 @@ const DisplayBooks = () => {
   useEffect(() => {
     const fetchNovels = async () => {
       try {
-        const response = await axios.get(`${API_URL}/novels`);
+        const response = await api.get('/novels');
         setNovels(response.data);
       } catch (err) {
         setError("Failed to fetch novels");

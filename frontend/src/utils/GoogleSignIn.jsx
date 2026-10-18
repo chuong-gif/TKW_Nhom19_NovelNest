@@ -1,13 +1,11 @@
 import { useState, useContext } from 'react';
 import { useGoogleLogin } from '@react-oauth/google';
-import axios from 'axios';
 import Cookies from 'js-cookie';
 import AuthContext from "../context/AuthContext";
 import googleIcon from '../assets/google_icon.jpg';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
-const API_URL = import.meta.env.VITE_API_URL;
+import api from '../services/api';
 
 const GoogleSignIn = () => {
   const { update } = useContext(AuthContext);
@@ -18,14 +16,14 @@ const GoogleSignIn = () => {
     onSuccess: async (response) => {
       try {
         setIsLoading(true);
-        const { data } = await axios.post(`${API_URL}/oauth/google-login`, {
+        const { data } = await api.post('/oauth/google-login', {
           token: response.access_token
         });
 
         if (data.success) {
           Cookies.set('token', data.token, {
             expires: 1,
-            secure: process.env.NODE_ENV === 'production',
+            secure: import.meta.env.PROD,
             sameSite: 'Lax'
           });
           

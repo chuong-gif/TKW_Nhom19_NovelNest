@@ -1,5 +1,4 @@
 import { useState, useEffect, useContext } from "react";
-import axios from "axios";
 import Navbar from "../components/Navbar";
 import Cookies from "js-cookie";
 import PostUpload from "../components/PostUpload";
@@ -8,12 +7,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import DarkModeContext from "../context/DarkModeContext";
 import LoadingScreen from "../utils/LoadingScreen";
 import Footer from "../utils/Footer";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import api from "../services/api";
 
 const ForumPage = () => {
   const [posts, setPosts] = useState([]);
-  const [error, setError] = useState(null);
   const [showNewPostForm, setShowNewPostForm] = useState(false);
   const [expandedComments, setExpandedComments] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -36,28 +33,19 @@ const ForumPage = () => {
 
   const fetchPosts = async () => {
     try {
-      const response = await axios.get(`${API_URL}/posts`);
+      const response = await api.get('/posts');
       let sortedPosts = [...response.data];
       sortedPosts.sort((a, b) => new Date(b.timeStamp) - new Date(a.timeStamp));
       setPosts(sortedPosts);
     } catch (err) {
       console.error("Error fetching posts:", err);
-      setError("Failed to load posts");
     }
   };
 
   const handleLike = async (postId) => {
     if (!userId || !token) return;
     try {
-      const response = await axios.post(
-        `${API_URL}/posts/${postId}/like`,
-        null,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await api.post(`/posts/${postId}/like`);
       setPosts((prevPosts) =>
         prevPosts.map((post) =>
           post._id === postId ? { ...post, likes: response.data.likes } : post
@@ -86,13 +74,9 @@ const ForumPage = () => {
     if (!userId || !token || !newComments[postId]?.trim()) return;
 
     try {
-      const response = await axios.post(
-        `${API_URL}/posts/${postId}/comments`,
-        {
-          content: newComments[postId],
-        },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const response = await api.post(`/posts/${postId}/comments`, {
+        content: newComments[postId],
+      });
 
       setPosts((prevPosts) =>
         prevPosts.map((post) =>

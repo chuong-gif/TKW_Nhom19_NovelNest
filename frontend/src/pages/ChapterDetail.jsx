@@ -1,14 +1,12 @@
 import { useState, useEffect, useContext } from "react";
 import { useParams, Link } from "react-router-dom";
-import axios from "axios";
 import Navbar from "../components/Navbar";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaVolumeUp, FaVolumeMute, FaArrowLeft, FaArrowRight, FaBook, FaBookReader } from "react-icons/fa";
 import DarkModeContext from "../context/DarkModeContext";
 import LoadingScreen from "../utils/LoadingScreen";
-import Cookies from 'js-cookie';
 import Footer from "../utils/Footer";
-const API_URL = import.meta.env.VITE_API_URL;
+import api from "../services/api";
 
 const ChapterDetail = () => {
   const { novelId, chapterId } = useParams();
@@ -21,28 +19,15 @@ const ChapterDetail = () => {
   const { isDarkMode } = useContext(DarkModeContext);
   const [showControls, setShowControls] = useState(true);
   let controlsTimeout;
-  const token = Cookies.get('token');
 
   useEffect(() => {
     const fetchChapterAndChaptersList = async () => {
       try {
-        const chaptersResponse = await axios.get(
-          `${API_URL}/chapters/${novelId}/chapters`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const chaptersResponse = await api.get(`/chapters/${novelId}/chapters`);
         setChapters(chaptersResponse.data);
 
-        const chapterResponse = await axios.get(
-          `${API_URL}/chapters/${novelId}/chapters/${chapterId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
+        const chapterResponse = await api.get(
+          `/chapters/${novelId}/chapters/${chapterId}`
         );
         setChapter(chapterResponse.data);
       } catch (err) {

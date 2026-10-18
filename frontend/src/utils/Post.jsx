@@ -1,4 +1,4 @@
-const Post = ( { id, title, content }) => {
+const Post = ({ title, content }) => {
     return (
             <div className="space-y-6">
                 <div className="flex items-start">

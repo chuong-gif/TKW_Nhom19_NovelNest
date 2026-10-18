@@ -1,10 +1,8 @@
 import { useState, useContext } from "react";
-import axios from "axios";
+import api from "../services/api";
 import { FaTimes, FaCloudUploadAlt, FaYoutube, FaImage, FaVideo, FaExclamationCircle } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import DarkModeContext from "../context/DarkModeContext";
-import Cookies from "js-cookie";
-const API_URL = import.meta.env.VITE_API_URL;
 
 const UploadNovel = ({ authorData, onNovelCreated, onClose }) => {
   const [newNovel, setNewNovel] = useState({
@@ -19,7 +17,6 @@ const UploadNovel = ({ authorData, onNovelCreated, onClose }) => {
   const [videoPreview, setVideoPreview] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { isDarkMode } = useContext(DarkModeContext);
-  const token = Cookies.get("token");
 
   const handleCoverPhotoChange = (e) => {
     const file = e.target.files[0];
@@ -101,12 +98,7 @@ const UploadNovel = ({ authorData, onNovelCreated, onClose }) => {
         }
       }
 
-      const response = await axios.post(`${API_URL}/novels`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.post("/novels", formData);
 
       onNovelCreated(response.data);
       onClose();

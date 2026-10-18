@@ -1,11 +1,8 @@
 import { useState, useContext } from "react";
-import axios from "axios";
+import api from "../services/api";
 import { FaTimes, FaCloudUploadAlt } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import DarkModeContext from "../context/DarkModeContext";
-import Cookies from "js-cookie";
-
-const API_URL = import.meta.env.VITE_API_URL;
 
 const PostUpload = ({ onSuccess, onClose }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -17,7 +14,6 @@ const PostUpload = ({ onSuccess, onClose }) => {
   });
   const [imagePreview, setImagePreview] = useState(null);
   const { isDarkMode } = useContext(DarkModeContext);
-  const token = Cookies.get("token");
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -38,12 +34,7 @@ const PostUpload = ({ onSuccess, onClose }) => {
       formData.append("image", newPost.image);
     }
     try {
-      await axios.post(`${API_URL}/posts`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await api.post("/posts", formData);
       setNewPost({ title: "", content: "", image: null });
       setImagePreview(null); // Reset preview after successful post
       onSuccess();

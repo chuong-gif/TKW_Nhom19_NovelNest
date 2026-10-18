@@ -1,11 +1,8 @@
 import { useState, useContext } from "react";
-import axios from "axios";
+import api from "../services/api";
 import { FaTimes, FaPen, FaFantasyFlightGames } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import DarkModeContext from "../context/DarkModeContext";
-import Cookies from "js-cookie";
-
-const API_URL = import.meta.env.VITE_API_URL;
 
 const WriteReview = ({ novelId, onSuccess, onClose, onNewReview }) => {
   const [reviewFormData, setReviewFormData] = useState({
@@ -15,19 +12,14 @@ const WriteReview = ({ novelId, onSuccess, onClose, onNewReview }) => {
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { isDarkMode } = useContext(DarkModeContext);
-  const token = Cookies.get("token");
 
   const handleReviewFormSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      const response = await axios.post(`${API_URL}/novel-reviews/${novelId}/reviews`, {
+      const response = await api.post(`/novel-reviews/${novelId}/reviews`, {
         reviewTitle: reviewFormData.reviewTitle,
         reviewContent: reviewFormData.reviewContent,
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        }
       });
       const newReview = response.data;
       onNewReview(newReview);

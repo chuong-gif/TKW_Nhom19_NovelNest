@@ -1,11 +1,9 @@
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import DarkModeContext from "../context/DarkModeContext";
-import axios from "axios";
 import { FaComments, FaHeart, FaUser, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import api from "../services/api";
 
 function Forum() {
   const [posts, setPosts] = useState([]);
@@ -17,7 +15,7 @@ function Forum() {
 
   const fetchPosts = async () => {
     try {
-      const response = await axios.get(`${API_URL}/posts`);
+      const response = await api.get('/posts');
       const sortedPosts = response.data
         .sort((a, b) => (b.likes?.length || 0) - (a.likes?.length || 0))
         .slice(0, 3);

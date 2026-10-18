@@ -1,6 +1,4 @@
 import { useState, useEffect, useContext } from "react";
-import axios from "axios";
-import Cookies from "js-cookie";
 import Navbar from "../components/Navbar";
 import ApplyAuthorship from "../components/ApplyAuthorship";
 import UploadNovel from "../components/UploadNovel";
@@ -13,20 +11,11 @@ import DarkModeContext from "../context/DarkModeContext";
 import AuthContext from "../context/AuthContext";
 import LoadingScreen from "../utils/LoadingScreen";
 import Footer from "../utils/Footer";
-
-const API_URL = import.meta.env.VITE_API_URL;
-const token = Cookies.get("token");
+import api from "../services/api";
 
 const fetchAuthorData = async () => {
   try {
-    const response = await axios.get(
-      `${API_URL}/authors/author-dashboard`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await api.get('/authors/author-dashboard');
     return response.data;
   } catch (error) {
     console.error("Error fetching author data:", error);
@@ -36,11 +25,7 @@ const fetchAuthorData = async () => {
 
 const fetchUserPosts = async () => {
   try {
-    const response = await axios.get(`${API_URL}/posts/user/user-posts`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await api.get('/posts/user/user-posts');
     return response.data;
   } catch (error) {
     console.error("Error fetching posts:", error);
@@ -50,7 +35,7 @@ const fetchUserPosts = async () => {
 
 const fetchNovelData = async (novel) => {
   try {
-    const response = await axios.get(`${API_URL}/novels/${novel._id}`);
+    const response = await api.get(`/novels/${novel._id}`);
     return response.data;
   } catch (error) {
     console.error(`Error fetching novel with ID: ${novel._id}`, error);
@@ -60,11 +45,7 @@ const fetchNovelData = async (novel) => {
 
 const fetchUserLikedNovels = async () => {
   try {
-    const response = await axios.get(`${API_URL}/users/liked-novels`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await api.get('/users/liked-novels');
     return response.data;
   } catch (error) {
     console.error("Error fetching liked novels:", error);

@@ -1,13 +1,12 @@
 import { useState, useEffect, useContext } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import axios from 'axios';
 import Navbar from '../components/Navbar';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaBook, FaBookOpen } from 'react-icons/fa';
 import DarkModeContext from '../context/DarkModeContext';
 import LoadingScreen from '../utils/LoadingScreen';
-import Cookies from 'js-cookie';
 import Footer from '../utils/Footer';
+import api from '../services/api';
 
 const Chapters = () => {
     const { id } = useParams();
@@ -17,17 +16,10 @@ const Chapters = () => {
     const { isDarkMode } = useContext(DarkModeContext);
     const [hoveredChapter, setHoveredChapter] = useState(null);
 
-    const API_URL = import.meta.env.VITE_API_URL;
-    const token = Cookies.get('token');
-
     useEffect(() => {
         const fetchChapters = async () => {
             try {
-                const response = await axios.get(`${API_URL}/chapters/${id}/chapters`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
+                const response = await api.get(`/chapters/${id}/chapters`);
                 setChapters(response.data);
             } catch (err) {
                 setError('Failed to fetch chapters');

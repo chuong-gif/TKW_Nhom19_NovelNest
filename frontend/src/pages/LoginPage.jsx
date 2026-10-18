@@ -1,12 +1,12 @@
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import Cookies from "js-cookie";
 import coverImg2 from "../assets/login_signup_cover2.jpg";
 import AuthContext from "../context/AuthContext";
 import GoogleSignIn from "../utils/GoogleSignIn";
 import DarkModeContext from "../context/DarkModeContext";
 import LoadingScreen from "../utils/LoadingScreen";
+import api from "../services/api";
 
 const LoginPage = () => {
   const { update } = useContext(AuthContext);
@@ -30,7 +30,6 @@ const LoginPage = () => {
   // Handler for form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const API_URL = import.meta.env.VITE_API_URL;
     setLoading(true);
     setError("");
 
@@ -49,7 +48,7 @@ const LoginPage = () => {
     }
 
     try {
-      const response = await axios.post(`${API_URL}/auth/login`, {
+      const response = await api.post('/auth/login', {
         email,
         password,
       });

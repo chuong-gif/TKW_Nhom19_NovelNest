@@ -1,15 +1,12 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useCallback } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
-import Cookies from "js-cookie";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaBookOpen, FaHeart, FaComments, FaChartLine, FaEdit, FaClock } from "react-icons/fa";
 import DarkModeContext from "../context/DarkModeContext";
 import Navbar from "../components/Navbar";
 import Footer from "../utils/Footer";
 import LoadingScreen from "../utils/LoadingScreen";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import api from "../services/api";
 
 const NovelAnalytics = () => {
   const { novelId } = useParams();
@@ -21,8 +18,16 @@ const NovelAnalytics = () => {
     chapterContent: "",
   });
   const { isDarkMode } = useContext(DarkModeContext);
-  const token = Cookies.get("token");
   const [isLoading, setIsLoading] = useState(true);
+
+  const fetchNovelDetails = useCallback(async () => {
+    try {
+      const response = await api.get(`/novels/${novelId}`);
+      setNovel(response.data);
+    } catch (error) {
+      console.error("Error fetching novel details:", error);
+    }
+  }, [novelId]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -33,16 +38,7 @@ const NovelAnalytics = () => {
 
   useEffect(() => {
     fetchNovelDetails();
-  }, [novelId]);
-
-  const fetchNovelDetails = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/novels/${novelId}`);
-      setNovel(response.data);
-    } catch (error) {
-      console.error("Error fetching novel details:", error);
-    }
-  };
+  }, [fetchNovelDetails]);
 
   const handleChapterSubmit = async (e) => {
     e.preventDefault();
@@ -52,13 +48,7 @@ const NovelAnalytics = () => {
     }
 
     try {
-      await axios.post(
-        `${API_URL}/chapters/${novelId}/new-chapter`,
-        newChapter,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      await api.post(`/chapters/${novelId}/new-chapter`, newChapter);
 
       fetchNovelDetails();
       setNewChapter({ chapterName: "", chapterContent: "" });

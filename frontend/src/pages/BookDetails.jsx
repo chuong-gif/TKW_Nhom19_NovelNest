@@ -1,18 +1,17 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
 import Cookies from "js-cookie";
 import Navbar from "../components/Navbar";
 import NovelCover from "../components/NovelCover";
 import NovelReviews from "../components/NovelReviews";
 import Footer from "../utils/Footer";
 import LoadingScreen from "../utils/LoadingScreen";
+import api from "../services/api";
 
 const BookDetails = () => {
   const { id } = useParams();
   const [novel, setNovel] = useState(null);
   const [reviews, setReviews] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [isLiked, setIsLiked] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -20,8 +19,6 @@ const BookDetails = () => {
   const userId = Cookies.get("userId");
   const token = Cookies.get("token");
   const navigate = useNavigate();
-
-  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -33,10 +30,9 @@ const BookDetails = () => {
   useEffect(() => {
     const fetchNovelDetails = async () => {
       try {
-        setLoading(true);
         const [novelResponse, reviewsResponse] = await Promise.all([
-          axios.get(`${API_URL}/novels/${id}`),
-          axios.get(`${API_URL}/novel-reviews/${id}/reviews`),
+          api.get(`/novels/${id}`),
+          api.get(`/novel-reviews/${id}/reviews`),
         ]);
 
         const novelData = novelResponse.data;
@@ -51,8 +47,6 @@ const BookDetails = () => {
       } catch (err) {
         console.error("Error fetching novel details:", err);
         setError(err.response?.data?.msg || "Failed to fetch novel details");
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -65,11 +59,7 @@ const BookDetails = () => {
         navigate("/login");
         return;
       }
-      const response = await axios.post(
-        `${API_URL}/novels/${id}/toggle-like`,
-        null,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const response = await api.post(`/novels/${id}/toggle-like`);
       setNovel((prev) => ({
         ...prev,
         likes: response.data.likes,

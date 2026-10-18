@@ -1,11 +1,9 @@
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import DarkModeContext from "../context/DarkModeContext";
-import { FaHeart, FaBookOpen, FaStar, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FaHeart, FaBookOpen, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import api from "../services/api";
 
 function WeeklyBest() {
   const [novels, setNovels] = useState([]);
@@ -17,12 +15,12 @@ function WeeklyBest() {
 
   const fetchNovels = async () => {
     try {
-      const response = await axios.get(`${API_URL}/novels`);
+      const response = await api.get("/novels");
       const sortedNovels = response.data
         .sort((a, b) => (b.likes?.length || 0) - (a.likes?.length || 0))
         .slice(0, 3);
       setNovels(sortedNovels);
-    } catch (err) {
+    } catch {
       setError("Failed to fetch novels");
     } finally {
       setIsLoading(false);
@@ -34,12 +32,14 @@ function WeeklyBest() {
   }, []);
 
   useEffect(() => {
+    if (novels.length === 0) return;
+
     const intervalId = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % novels.length);
     }, 5000);
 
     return () => clearInterval(intervalId);
-  }, [novels]);
+  }, [novels.length]);
 
   const handlePrevious = () => {
     setCurrentIndex((prevIndex) => 

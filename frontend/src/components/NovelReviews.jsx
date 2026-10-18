@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../services/api";
 import Cookies from "js-cookie";
 import { FaHeart, FaRegHeart, FaComment, FaClock } from "react-icons/fa";
 import WriteReview from "./WriteReview";
@@ -13,7 +13,6 @@ const NovelReviews = ({ reviews, novelId }) => {
   const token = Cookies.get("token");
   const navigate = useNavigate();
   const { isDarkMode } = useContext(DarkModeContext);
-  const API_URL = import.meta.env.VITE_API_URL;
 
   const handleReviewLike = async (reviewId, e) => {
     e.stopPropagation(); // Prevent triggering the review click
@@ -23,11 +22,7 @@ const NovelReviews = ({ reviews, novelId }) => {
         return;
       }
 
-      const response = await axios.post(
-        `${API_URL}/novel-reviews/${reviewId}/toggle-like`,
-        null,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const response = await api.post(`/novel-reviews/${reviewId}/toggle-like`);
 
       setLocalReviews((prevReviews) =>
         prevReviews.map((review) =>

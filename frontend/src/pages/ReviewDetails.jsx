@@ -1,13 +1,13 @@
 import { useState, useEffect, useContext } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import axios from "axios";
 import Cookies from "js-cookie";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaHeart, FaRegHeart, FaUserCircle, FaClock, FaReply, FaPaperPlane, FaFantasyFlightGames } from "react-icons/fa";
 import DarkModeContext from "../context/DarkModeContext";
 import LoadingScreen from "../utils/LoadingScreen";
 import Footer from "../utils/Footer";
+import api from "../services/api";
 
 const ReviewDetails = () => {
   const { reviewId } = useParams();
@@ -19,21 +19,13 @@ const ReviewDetails = () => {
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const userId = Cookies.get("userId");
-  const token = Cookies.get("token");
   const { isDarkMode } = useContext(DarkModeContext);
-
-  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const fetchReviewDetails = async () => {
       try {
-        const reviewResponse = await axios.get(
-          `${API_URL}/novel-reviews/${novelId}/reviews/${reviewId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
+        const reviewResponse = await api.get(
+          `/novel-reviews/${novelId}/reviews/${reviewId}`
         );
         setReview(reviewResponse.data);
       } catch (err) {
@@ -51,22 +43,12 @@ const ReviewDetails = () => {
     if (!newReply.trim()) return;
     setIsSubmitting(true);
     try {
-      await axios.post(
-        `${API_URL}/novel-reviews/${novelId}/reviews/${reviewId}`,
-        { content: newReply },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      await api.post(
+        `/novel-reviews/${novelId}/reviews/${reviewId}`,
+        { content: newReply }
       );
-      const updatedReview = await axios.get(
-        `${API_URL}/novel-reviews/${novelId}/reviews/${reviewId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      const updatedReview = await api.get(
+        `/novel-reviews/${novelId}/reviews/${reviewId}`
       );
       setReview(updatedReview.data);
       setNewReply("");
@@ -96,14 +78,8 @@ const ReviewDetails = () => {
     });
 
     try {
-      await axios.post(
-        `${API_URL}/novel-reviews/${reviewId}/replies/${replyId}/toggle-like`,
-        null,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      await api.post(
+        `/novel-reviews/${reviewId}/replies/${replyId}/toggle-like`
       );
     } catch (err) {
       console.error("Failed to toggle like", err);

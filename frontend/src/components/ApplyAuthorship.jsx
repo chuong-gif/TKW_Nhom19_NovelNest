@@ -1,11 +1,8 @@
 import { useState, useContext } from "react";
-import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTimes, FaFeatherAlt, FaBookOpen, FaPen } from "react-icons/fa";
 import DarkModeContext from "../context/DarkModeContext";
-import Cookies from "js-cookie";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import api from "../services/api";
 
 const ApplyAuthorship = ({ onRequest, onClose }) => {
   const [authorFormData, setAuthorFormData] = useState({
@@ -14,23 +11,14 @@ const ApplyAuthorship = ({ onRequest, onClose }) => {
   });
   const [error, setError] = useState("");
   const { isDarkMode } = useContext(DarkModeContext);
-  const token = Cookies.get("token");
 
   const handleAuthorFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(
-        `${API_URL}/authors/applyAuthorship`,
-        {
-          penName: authorFormData.penName,
-          bio: authorFormData.bio,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await api.post('/authors/applyAuthorship', {
+        penName: authorFormData.penName,
+        bio: authorFormData.bio,
+      });
       onRequest();
       onClose();
     } catch (error) {

@@ -1,11 +1,11 @@
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import coverImage from "../assets/login_signup_cover1.webp";
 import GoogleSignIn from "../utils/GoogleSignIn";
 import "../styles/SignUp.css";
 import DarkModeContext from "../context/DarkModeContext";
 import LoadingScreen from "../utils/LoadingScreen";
+import api from "../services/api";
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -26,7 +26,6 @@ const SignupPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const API_URL = import.meta.env.VITE_API_URL;
     setLoading(true);
     setError("");
 
@@ -50,7 +49,7 @@ const SignupPage = () => {
     }
 
     try {
-      await axios.post(`${API_URL}/auth/signup`, {
+      await api.post('/auth/signup', {
         name,
         email,
         password,

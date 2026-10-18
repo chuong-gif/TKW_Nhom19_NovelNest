@@ -3,17 +3,16 @@ import { useContext } from "react";
 import DarkModeContext from "../context/DarkModeContext";
 
 const Book = ({ _id, title, description, coverPhoto }) => {
-  const NOVEL_COVERS_PATH = import.meta.env.VITE_API_NOVELCOVERS_URL;
   const imageUrl = coverPhoto
     ? coverPhoto.url
-    : "/default-cover.jpg";
+    : "/ink-logo-outline.png";
   const { isDarkMode } = useContext(DarkModeContext);
 
   return (
     <Link
       to={`/novels/${_id}`}
       className={
-        `block ${isDarkMode ? "bg-black/100" : "bg-white"} rounded-xl overflow-hidden max-w-xs w-52 m-2 transform transition-all duration-500 hover:scale-105 hover:-translate-y-2hover:rotate-1
+        `block ${isDarkMode ? "bg-black/100" : "bg-white"} rounded-xl overflow-hidden max-w-xs w-52 m-2 transform transition-all duration-500 hover:scale-105 hover:-translate-y-2 hover:rotate-1
         ${
           isDarkMode
             ? "shadow-lg shadow-white/10 hover:shadow-xl hover:shadow-white/20"
@@ -35,7 +34,8 @@ const Book = ({ _id, title, description, coverPhoto }) => {
             src={imageUrl}
             alt={title}
             onError={(e) => {
-              e.target.src = "/default-cover.jpg";
+              e.target.onerror = null;
+              e.target.src = "/ink-logo-outline.png";
             }}
           />
           <div

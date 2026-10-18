@@ -5,9 +5,7 @@ import { FaRankingStar } from "react-icons/fa6";
 import AuthContext from "../context/AuthContext";
 import DarkModeContext from "../context/DarkModeContext";
 import Cookies from "js-cookie";
-import axios from "axios";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import api from "../services/api";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -47,7 +45,7 @@ const Navbar = () => {
 
       try {
         setIsLoading(true);
-        const response = await axios.get(`${API_URL}/novels/search`, {
+        const response = await api.get("/novels/search", {
           params: { query: searchQuery.trim() },
         });
         setSuggestions(response.data.slice(0, 5));
