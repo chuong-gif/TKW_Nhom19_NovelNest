@@ -21,15 +21,6 @@ function verifyToken(req, res, next) {
 
     try {
         const decoded = jwt.verify(token, secret_key);
-
-        // Optional: Check if token is expired
-        if (decoded.exp && decoded.exp < Date.now() / 1000) {
-            return res.status(401).json({
-                success: false,
-                message: "Token has expired"
-            });
-        }
-
         req.user = decoded; // Attach decoded user info to request
         next();
     } catch (error) {

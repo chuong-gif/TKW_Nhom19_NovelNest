@@ -22,12 +22,6 @@ connectDB();
 
 const port = process.env.PORT || 5000;
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({ message: 'Something went wrong!' });
-});
-
 const userRouter = require('./routes/userRouter');
 const authRouter = require('./routes/authRouter');
 const postRouter = require('./routes/postRouter');
@@ -50,6 +44,12 @@ app.use('/api/novel-reviews', novelReviewsRouter);
 // Health check endpoint
 app.get('/health', (req, res) => {
     res.status(200).json({ status: 'ok', message: 'Server is running' });
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ message: 'Something went wrong!' });
 });
 
 // Start server

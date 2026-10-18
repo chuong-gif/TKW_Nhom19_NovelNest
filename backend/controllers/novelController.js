@@ -3,6 +3,23 @@ const Author = require('../models/Author');
 const Chapter = require('../models/Chapter');
 const Review = require('../models/Review');
 const User = require('../models/User');
+const escapeRegex = require('../utils/escapeRegex');
+const { toggleDocumentLike } = require('../utils/likeHelper');
+
+// Helper to populate default novel fields
+const defaultNovelPopulate = (query) => {
+    return query
+        .populate('author', '-user.password')
+        .populate('chapters', 'chapterNumber chapterName')
+        .populate({
+            path: 'reviews',
+            select: 'reviewTitle reviewContent likes',
+            populate: {
+                path: 'user',
+                select: '-password'
+            }
+        });
+};
 
 const createNovel = async (req, res) => {
     try {
@@ -51,24 +68,14 @@ const createNovel = async (req, res) => {
         return res.status(201).json(novel);
     } catch (error) {
         console.error('Create novel error:', error);
-        return res.status(500).json({ msg: "Failed to create novel", error: error.message });
+        return res.status(500).json({ msg: "Failed to create novel" });
     }
 };
 
 // Get all novels with populated data
 const getAllNovels = async (req, res) => {
     try {
-        const novels = await Novel.find()
-            .populate('author', '-user.password')
-            .populate('chapters', 'chapterNumber chapterName')
-            .populate({
-                path: 'reviews',
-                select: 'reviewTitle reviewContent likes',
-                populate: {
-                    path: 'user',
-                    select: '-password'
-                }
-            })
+        const novels = await defaultNovelPopulate(Novel.find())
             .sort({ createdAt: -1 });
 
         return res.status(200).json(novels);
@@ -81,16 +88,7 @@ const getAllNovels = async (req, res) => {
 // Get a specific novel by ID
 const getNovelById = async (req, res) => {
     try {
-        const novel = await Novel.findById(req.params.id)
-            .populate('author', '-user.password')
-            .populate('chapters', 'chapterNumber chapterName')
-            .populate({
-                path: 'reviews',
-                populate: {
-                    path: 'user',
-                    select: '-password'
-                }
-            });
+        const novel = await defaultNovelPopulate(Novel.findById(req.params.id));
 
         if (!novel) {
             return res.status(404).json({ msg: "Novel not found" });
@@ -109,17 +107,7 @@ const getNovelById = async (req, res) => {
 // Get all novels by an author
 const getNovelsByAuthor = async (req, res) => {
     try {
-        const novels = await Novel.find({ author: req.params.authorId })
-            .populate('author', '-user.password')
-            .populate('chapters', 'chapterNumber chapterName')
-            .populate({
-                path: 'reviews',
-                select: 'reviewTitle reviewContent likes',
-                populate: {
-                    path: 'user',
-                    select: '-password'
-                }
-            })
+        const novels = await defaultNovelPopulate(Novel.find({ author: req.params.authorId }))
             .sort({ createdAt: -1 });
 
         return res.status(200).json(novels);
@@ -146,22 +134,23 @@ const updateNovel = async (req, res) => {
         // Update fields if provided
         if (title) novel.title = title;
         if (description) novel.description = description;
-        if (req.files?.coverPhoto) novel.coverPhoto = req.files.coverPhoto[0].filename;
-        if (req.files?.introVideo) novel.introVideo = req.files.introVideo[0].filename;
+        if (req.files?.coverPhoto) {
+            novel.coverPhoto = {
+                url: req.files.coverPhoto[0].path,
+                publicId: req.files.coverPhoto[0].filename
+            };
+        }
+        if (req.files?.introVideo) {
+            novel.introVideo = {
+                url: req.files.introVideo[0].path,
+                publicId: req.files.introVideo[0].filename
+            };
+        }
 
         await novel.save();
 
         // Populate related data before sending response
-        await novel.populate('author', '-user.password')
-            .populate('chapters', 'chapterNumber chapterName')
-            .populate({
-                path: 'reviews',
-                select: 'reviewTitle reviewContent likes',
-                populate: {
-                    path: 'user',
-                    select: '-password'
-                }
-            });
+        await defaultNovelPopulate(novel);
 
         return res.status(200).json(novel);
     } catch (error) {
@@ -176,20 +165,41 @@ const updateNovel = async (req, res) => {
 // Delete a novel
 const deleteNovel = async (req, res) => {
     try {
-        const novel = await Novel.findById(req.params.id);
+        const novelId = req.params.id;
+        const novel = await Novel.findById(novelId);
         if (!novel) {
             return res.status(404).json({ msg: "Novel not found" });
         }
 
-        await Chapter.deleteMany({ novel: novel._id });
-        await Review.deleteMany({ novel: novel._id });
-
-        const author = await Author.findById(novel.author);
-        if (author) {
-            author.novels = author.novels.filter(id => id.toString() !== novel._id.toString());
-            await author.save();
+        // Clean up orphan references
+        // 1. Find all reviews of this novel and remove references from User.reviews
+        const reviewsToDelete = await Review.find({ novel: novel._id }, '_id');
+        const reviewIds = reviewsToDelete.map(r => r._id);
+        if (reviewIds.length > 0) {
+            await User.updateMany(
+                { reviews: { $in: reviewIds } },
+                { $pull: { reviews: { $in: reviewIds } } }
+            );
+            await Review.deleteMany({ novel: novel._id });
         }
 
+        // 2. Remove novel reference from User.likedNovels
+        await User.updateMany(
+            { likedNovels: novel._id },
+            { $pull: { likedNovels: novel._id } }
+        );
+
+        // 3. Delete chapters associated with novel
+        await Chapter.deleteMany({ novel: novel._id });
+
+        // 4. Remove novel from author's novels
+        if (novel.author) {
+            await Author.findByIdAndUpdate(novel.author, {
+                $pull: { novels: novel._id }
+            });
+        }
+
+        // 5. Delete novel
         await novel.deleteOne();
 
         return res.status(200).json({ msg: "Novel deleted successfully" });
@@ -210,24 +220,13 @@ const toggleNovelLike = async (req, res) => {
         if (!userId) {
             return res.status(400).json({ msg: "userId is required" });
         }
-        // Check if user exists
-        const novel = await Novel.findById(novelId);
-        if (!novel) {
-            return res.status(404).json({ msg: "Novel not found" });
+
+        const result = await toggleDocumentLike(Novel, novelId, userId, { field: 'likedNovels' });
+        if (result.status !== 200) {
+            return res.status(result.status).json({ msg: result.msg });
         }
-        const userLikeIndex = novel.likes.indexOf(userId);
-        const user = await User.findById(userId);
-        const novelLikeIndex = user.likedNovels.indexOf(novelId);
-        if (userLikeIndex === -1) {
-            novel.likes.push(userId);
-            user.likedNovels.push(novelId);
-        } else {
-            novel.likes.splice(userLikeIndex, 1);
-            user.likedNovels.splice(novelLikeIndex, 1);
-        }
-        await user.save();
-        await novel.save();
-        return res.status(200).json(novel);
+
+        return res.status(200).json(result.data);
     } catch (error) {
         console.error('Toggle novel like error:', error);
         if (error.kind === 'ObjectId') {
@@ -245,11 +244,12 @@ const searchNovels = async (req, res) => {
             return res.status(400).json({ msg: "Search query must be at least 3 characters" });
         }
 
-        // Use a regular expression for case-insensitive partial matching
-        const regex = new RegExp(query, 'i');
+        // Use a safe regular expression for case-insensitive partial matching
+        const safeQuery = escapeRegex(query);
+        const regex = new RegExp(safeQuery, 'i');
 
         const novels = await Novel.find(
-            { title: { $regex: regex } } // Search novels where title matches the query
+            { title: { $regex: regex } }
         )
             .populate('author', '-user.password')
             .populate('chapters', 'chapterNumber chapterName')
@@ -261,7 +261,6 @@ const searchNovels = async (req, res) => {
         return res.status(500).json({ msg: "Failed to search novels" });
     }
 };
-
 
 module.exports = {
     createNovel,

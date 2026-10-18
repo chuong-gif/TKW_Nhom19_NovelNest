@@ -4,7 +4,6 @@ const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
 const cloudinaryConfig = require('../utils/cloudinaryConfig');
-const e = require('express');
 cloudinaryConfig(cloudinary);
 
 const fileFilter = (req, file, cb) => {
@@ -66,12 +65,7 @@ const upload = multer({
   storage: storage,
   fileFilter: fileFilter,
   limits: {
-    fileSize: (req, file) => {
-      if (file.fieldname === 'introVideo') {
-        return 50 * 1024 * 1024; // 50MB for videos
-      }
-      return 5 * 1024 * 1024; // 5MB for other files
-    }
+    fileSize: 50 * 1024 * 1024 // 50MB
   }
 });
 

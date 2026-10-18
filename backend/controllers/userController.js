@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const Novel = require('../models/Novel');
+const escapeRegex = require('../utils/escapeRegex');
 
 const getAllUsers = async (req, res) => {
     try {
@@ -19,8 +20,9 @@ const getAllUsers = async (req, res) => {
 const getUserByName = async (req, res) => {
     try {
         // Case-insensitive name search
+        const safeName = escapeRegex(req.params.name);
         const users = await User.find(
-            { name: { $regex: new RegExp(req.params.name, 'i') } },
+            { name: { $regex: new RegExp(safeName, 'i') } },
             '-password'
         )
         .populate('posts', 'title content')

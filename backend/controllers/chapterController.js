@@ -15,15 +15,29 @@ const uploadChapter = async (req, res) => {
             return res.status(404).json({ msg: "Novel not found" });
         }
 
-        const chapterNumber = novel.chapters.length + 1;
+        // Retry on duplicate key error (E11000)
+        let newChapter = null;
+        for (let attempt = 0; attempt < 2; attempt++) {
+            try {
+                const highestChapter = await Chapter.findOne({ novel: novelId })
+                    .sort({ chapterNumber: -1 });
+                const chapterNumber = highestChapter ? highestChapter.chapterNumber + 1 : 1;
 
-        const newChapter = new Chapter({
-            novel: novelId,
-            chapterNumber,
-            chapterName,
-            chapterContent
-        });
-        await newChapter.save();
+                newChapter = new Chapter({
+                    novel: novelId,
+                    chapterNumber,
+                    chapterName,
+                    chapterContent
+                });
+                await newChapter.save();
+                break;
+            } catch (err) {
+                if ((err.code === 11000 || err.message?.includes('E11000')) && attempt === 0) {
+                    continue; // Retry once
+                }
+                throw err;
+            }
+        }
 
         novel.chapters.push(newChapter._id);
         await novel.save();

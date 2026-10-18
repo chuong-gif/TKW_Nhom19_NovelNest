@@ -1,6 +1,22 @@
 const Review = require("../models/Review");
 const Novel = require("../models/Novel");
 const User = require("../models/User");
+const { toggleDocumentLike, toggleSubdocumentLike } = require("../utils/likeHelper");
+
+// Internal helper to populate review data
+const populateReviewQuery = (query) => {
+    return query
+        .populate("user", "-password")
+        .populate({
+            path: "replies.user",
+            select: "-password",
+        });
+};
+
+// Internal function to fetch reviews for a novel
+const fetchReviewsForNovel = async (novelId) => {
+    return populateReviewQuery(Review.find({ novel: novelId })).sort({ createdAt: -1 });
+};
 
 // Add a review to a novel
 const addReview = async (req, res) => {
@@ -41,11 +57,9 @@ const addReview = async (req, res) => {
         // Save the review
         await review.save();
 
-        // Add review reference to novel's reviews array
-        novel.reviews.push(review._id);
-        await novel.save();
-        user.reviews.push(review._id);
-        await user.save();
+        // Add review reference to novel and user
+        await Novel.findByIdAndUpdate(novelId, { $push: { reviews: review._id } });
+        await User.findByIdAndUpdate(userId, { $push: { reviews: review._id } });
 
         // Populate user info before sending response
         await review.populate("user", "-password");
@@ -63,18 +77,7 @@ const addReview = async (req, res) => {
 // Get all reviews for a novel
 const getNovelReviews = async (req, res) => {
     try {
-        const reviews = await Review.find({ novel: req.params.novelId })
-            .populate("user", "-password")
-            .populate({
-                path: "replies.user",
-                select: "-password",
-            })
-            .sort({ createdAt: -1 });
-
-        if (reviews.length === 0) {
-            return res.status(200).json([]);
-        }
-
+        const reviews = await fetchReviewsForNovel(req.params.novelId);
         return res.status(200).json(reviews);
     } catch (error) {
         console.error("Get novel reviews error:", error);
@@ -139,26 +142,12 @@ const toggleReviewLike = async (req, res) => {
             return res.status(400).json({ msg: "userId is required" });
         }
 
-        const user = await User.findById(userId);
-        if (!user) {
-            return res.status(404).json({ msg: "User not found" });
+        const result = await toggleDocumentLike(Review, reviewId, userId);
+        if (result.status !== 200) {
+            return res.status(result.status).json({ msg: result.msg });
         }
 
-        const review = await Review.findById(reviewId);
-        if (!review) {
-            return res.status(404).json({ msg: "Review not found" });
-        }
-
-        const likeIndex = review.likes.indexOf(userId);
-        if (likeIndex === -1) {
-            review.likes.push(userId);
-        } else {
-            review.likes.splice(likeIndex, 1);
-        }
-
-        await review.save();
-
-        return res.status(200).json(review);
+        return res.status(200).json(result.data);
     } catch (error) {
         console.error("Toggle review like error:", error);
         if (error.kind === "ObjectId") {
@@ -177,34 +166,12 @@ const toggleReplyLike = async (req, res) => {
             return res.status(400).json({ msg: "userId is required" });
         }
 
-        // Check if user exists
-        const user = await User.findById(userId);
-        if (!user) {
-            return res.status(404).json({ msg: "User not found" });
+        const result = await toggleSubdocumentLike(Review, reviewId, 'replies', replyId, userId);
+        if (result.status !== 200) {
+            return res.status(result.status).json({ msg: result.msg });
         }
 
-        // Find the review and reply
-        const review = await Review.findById(reviewId);
-        if (!review) {
-            return res.status(404).json({ msg: "Review not found" });
-        }
-
-        const reply = review.replies.id(replyId);
-        if (!reply) {
-            return res.status(404).json({ msg: "Reply not found" });
-        }
-
-        // Toggle like in reply
-        const likeIndex = reply.likes.indexOf(userId);
-        if (likeIndex === -1) {
-            reply.likes.push(userId);
-        } else {
-            reply.likes.splice(likeIndex, 1);
-        }
-
-        await review.save();
-
-        return res.status(200).json(review);
+        return res.status(200).json(result.data);
     } catch (error) {
         console.error("Toggle reply like error:", error);
         if (error.kind === "ObjectId") {
@@ -219,20 +186,27 @@ const deleteReview = async (req, res) => {
     try {
         const { reviewId } = req.params;
 
-        // Find and delete the review
+        // Find the review
         const review = await Review.findById(reviewId);
         if (!review) {
             return res.status(404).json({ msg: "Review not found" });
         }
 
-        // Remove review reference from novel's reviews array
-        const novel = await Novel.findById(review.novel);
-        if (novel) {
-            novel.reviews = novel.reviews.filter((id) => id.toString() !== reviewId);
-            await novel.save();
+        // Clean up orphan references
+        // 1. Remove from novel's reviews array
+        if (review.novel) {
+            await Novel.findByIdAndUpdate(review.novel, {
+                $pull: { reviews: review._id }
+            });
         }
 
-        // Delete the review
+        // 2. Remove from user's reviews array
+        await User.updateMany(
+            { reviews: review._id },
+            { $pull: { reviews: review._id } }
+        );
+
+        // 3. Delete the review
         await review.deleteOne();
 
         return res.status(200).json({ msg: "Review deleted successfully" });
@@ -249,12 +223,7 @@ const deleteReview = async (req, res) => {
 const getReviewsById = async (req, res) => {
     try {
         const { reviewId } = req.params;
-        const review = await Review.findById(reviewId)
-            .populate("user", "-password")
-            .populate({
-                path: "replies.user",
-                select: "-password",
-            });
+        const review = await populateReviewQuery(Review.findById(reviewId));
 
         if (!review) {
             return res.status(404).json({ msg: "Review not found" });
@@ -274,14 +243,7 @@ const getReviewsById = async (req, res) => {
 const getReviewsByNovelId = async (req, res) => {
     try {
         const { novelId } = req.params;
-        const reviews = await Review.find({ novel: novelId })
-            .populate("user", "-password")
-            .populate({
-                path: "replies.user",
-                select: "-password",
-            })
-            .sort({ createdAt: -1 });
-
+        const reviews = await fetchReviewsForNovel(novelId);
         return res.status(200).json(reviews);
     } catch (error) {
         console.error("Get reviews by novel ID error:", error);
