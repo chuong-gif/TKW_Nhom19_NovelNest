@@ -7,12 +7,12 @@ const Footer = () => {
   return (
     <footer className="bg-gradient-to-br from-white via-white to-gray-200 text-black dark:bg-gradient-to-br dark:from-black dark:via-black-800 dark:to-gray-900 dark:text-white relative">
       {/* <div className="h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div> */}
-      
+
       <div className="max-w-7xl mx-auto px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-8">
           <div className="space-y-6">
             <h2 className="text-3xl font-bold dark:bg-gradient-to-r dark:from-blue-400 dark:via-purple-400 dark:to-white dark:bg-clip-text dark:text-transparent transform hover:scale-105 transition-transform duration-300">
-              Novel Hub
+              Novel Nest
             </h2>
             <p className="text-gray-600 text-sm leading-relaxed dark:text-gray-400">
               Cổng kết nối tới thế giới truyện bất tận. Khám phá, đọc và sáng tác những tác phẩm lôi cuốn cùng cộng đồng không ngừng lớn mạnh.
@@ -115,8 +115,8 @@ const Footer = () => {
             </div>
           </div>
 
-                   {/* Newsletter */}
-         <div className="space-y-4">
+          {/* Newsletter */}
+          <div className="space-y-4">
             <h3 className="text-xl font-semibold relative inline-block">
               Cập nhật thông tin
               <span className="absolute bottom-0 left-0 w-1/2 h-0.5 bg-gradient-to-r from-pink-500 to-transparent"></span>
@@ -125,6 +125,15 @@ const Footer = () => {
               Đăng ký nhận thông tin mới nhất và các câu chuyện nổi bật.
             </p>
             <div className="flex flex-col space-y-2">
+              {/*}             <input
+                type="email"
+                placeholder="Enter your email"
+                className="bg-gray-800/50 text-white px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 placeholder-gray-500"
+              />
+              <button className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 px-4 py-3 rounded-md hover:opacity-90 transition-all duration-300 transform hover:scale-[1.02] focus:scale-[0.98]">
+                Subscribe
+              </button>
+*/}
             </div>
           </div>
 
@@ -135,7 +144,7 @@ const Footer = () => {
         <div className="border-t border-gray-200 mt-16 pt-8 dark:border-gray-800">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className="text-gray-600 dark:text-gray-400 text-sm">
-              &copy; {currentYear} Novel Hub. Bản quyền thuộc về Novel Hub. Thực hiện với ❤️ bởi NK
+              &copy; {currentYear} Novel Nest. Bản quyền thuộc về Novel Nest. Thực hiện với ❤️ bởi Nhóm 19 TKW
             </p>
             <div className="flex flex-wrap justify-center gap-6">
               <Link to="/privacy" className="text-gray-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-white text-sm transition-colors duration-300">

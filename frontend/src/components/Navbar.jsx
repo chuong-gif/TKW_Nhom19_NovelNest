@@ -83,24 +83,22 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 ${
-        isDarkMode
+      className={`fixed top-0 left-0 w-full z-50 ${isDarkMode
           ? "bg-black/100 backdrop-blur-md shadow-lg border-b border-gray-800"
           : "bg-white/80 backdrop-blur-md shadow-lg"
-      }`}
+        }`}
     >
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between py-4 px-4 gap-20">
           <Link
             to="/home"
-            className={`flex items-center space-x-2 ${
-              isDarkMode
+            className={`flex items-center space-x-2 ${isDarkMode
                 ? "text-white hover:text-white"
                 : "text-black hover:text-black"
-            } transition-colors duration-300`}
+              } transition-colors duration-300`}
           >
             <span className="text-2xl font-bold flex items-center space-x-1">
-              <span>Novel Hub</span>
+              <span>Novel Nest</span>
               <img
                 src={
                   isDarkMode
@@ -121,11 +119,10 @@ const Navbar = () => {
               <input
                 type="text"
                 placeholder="Tìm truyện..."
-                className={`w-full py-2.5 pl-12 pr-4 rounded-xl border ${
-                  isDarkMode
+                className={`w-full py-2.5 pl-12 pr-4 rounded-xl border ${isDarkMode
                     ? "bg-gray-600/50 border-gray-800 text-white placeholder-gray-400 focus:border-blue-500"
                     : "border-gray-200 bg-gray-50/50 focus:border-blue-500"
-                } focus:ring-2 focus:ring-blue-200 transition-all duration-300`}
+                  } focus:ring-2 focus:ring-blue-200 transition-all duration-300`}
                 value={searchQuery}
                 onChange={(e) => {
                   setSearchQuery(e.target.value);
@@ -139,11 +136,10 @@ const Navbar = () => {
               {/* Suggestions Dropdown */}
               {showSuggestions && searchQuery.trim().length >= 2 && (
                 <div
-                  className={`absolute mt-2 w-full rounded-xl shadow-xl border overflow-hidden ${
-                    isDarkMode
+                  className={`absolute mt-2 w-full rounded-xl shadow-xl border overflow-hidden ${isDarkMode
                       ? "bg-black/100 border-gray-800"
                       : "bg-white border-gray-100"
-                  } max-h-96 overflow-y-auto z-50`}
+                    } max-h-96 overflow-y-auto z-50`}
                 >
                   {isLoading ? (
                     <div className="p-4 text-center text-gray-500">
@@ -153,9 +149,8 @@ const Navbar = () => {
                     suggestions.map((novel) => (
                       <div
                         key={novel._id}
-                        className={`flex items-center gap-4 p-3 cursor-pointer transition-all duration-300 ${
-                          isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-50"
-                        }`}
+                        className={`flex items-center gap-4 p-3 cursor-pointer transition-all duration-300 ${isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-50"
+                          }`}
                         onClick={() => handleSuggestionClick(novel)}
                       >
                         <img
@@ -165,16 +160,14 @@ const Navbar = () => {
                         />
                         <div className="flex-1 min-w-0">
                           <h3
-                            className={`text-sm font-semibold truncate ${
-                              isDarkMode ? "text-white" : "text-gray-800"
-                            }`}
+                            className={`text-sm font-semibold truncate ${isDarkMode ? "text-white" : "text-gray-800"
+                              }`}
                           >
                             {novel.title}
                           </h3>
                           <p
-                            className={`text-xs truncate mt-1 ${
-                              isDarkMode ? "text-gray-400" : "text-gray-500"
-                            }`}
+                            className={`text-xs truncate mt-1 ${isDarkMode ? "text-gray-400" : "text-gray-500"
+                              }`}
                           >
                             {novel.description}
                           </p>
@@ -183,9 +176,8 @@ const Navbar = () => {
                     ))
                   ) : (
                     <div
-                      className={`p-4 text-center ${
-                        isDarkMode ? "text-gray-400" : "text-gray-500"
-                      }`}
+                      className={`p-4 text-center ${isDarkMode ? "text-gray-400" : "text-gray-500"
+                        }`}
                     >
                       Không tìm thấy gợi ý nào
                     </div>
@@ -199,22 +191,20 @@ const Navbar = () => {
           <div className="hidden md:flex items-center gap-2">
             <button
               onClick={() => navigate("/rankings")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 ${
-                isDarkMode
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 ${isDarkMode
                   ? "text-white bg-black/100 hover:bg-gray-800"
                   : "text-gray-700 bg-white/80 hover:bg-gray-100"
-              }`}
+                }`}
             >
               <FaRankingStar className={"text-lg"} />
               <span>Bảng xếp hạng</span>
             </button>
             <button
               onClick={() => navigate("/forum")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 ${
-                isDarkMode
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 ${isDarkMode
                   ? "text-white bg-black/100 hover:bg-gray-800"
                   : "text-gray-700 bg-white/80 hover:bg-gray-100"
-              }`}
+                }`}
             >
               <FaComments className="text-lg" />
               <span>Diễn đàn</span>
@@ -223,11 +213,10 @@ const Navbar = () => {
             {isAuthenticated() && (
               <button
                 onClick={() => navigate("/profile")}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 ${
-                  isDarkMode
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 ${isDarkMode
                     ? "text-white bg-black/100 hover:bg-gray-800"
                     : "text-gray-700 bg-white/80 hover:bg-gray-100"
-                }`}
+                  }`}
               >
                 <FaUser className="text-lg" />
                 <span>Hồ sơ</span>
@@ -236,11 +225,10 @@ const Navbar = () => {
 
             <button
               onClick={toggleDarkMode}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 ${
-                isDarkMode
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 ${isDarkMode
                   ? "text-yellow-300 hover:bg-yellow-500/20"
                   : "text-gray-700 hover:bg-yellow-100"
-              }`}
+                }`}
             >
               {isDarkMode ? (
                 <FaSun className="text-lg" />
@@ -253,11 +241,10 @@ const Navbar = () => {
               onClick={
                 isAuthenticated() ? handleLogout : () => navigate("/login")
               }
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 ${
-                isDarkMode
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 ${isDarkMode
                   ? "text-white hover:bg-gradient-to-r hover:from-red-600 hover:to-pink-600"
                   : "text-gray-700 hover:bg-gradient-to-r hover:from-red-500 hover:to-pink-500"
-              } hover:text-white`}
+                } hover:text-white`}
             >
               <FaSignOutAlt className="text-lg" />
               <span>{isAuthenticated() ? "Đăng xuất" : "Đăng nhập"}</span>
@@ -283,20 +270,18 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div
-          className={`md:hidden ${
-            isDarkMode ? "bg-black" : "bg-white"
-          } border-t ${isDarkMode ? "border-gray-800" : "border-gray-200"}`}
+          className={`md:hidden ${isDarkMode ? "bg-black" : "bg-white"
+            } border-t ${isDarkMode ? "border-gray-800" : "border-gray-200"}`}
         >
           <div className="p-4">
             <div className="relative">
               <input
                 type="text"
                 placeholder="Tìm truyện..."
-                className={`w-full py-2 pl-10 pr-4 rounded-lg border ${
-                  isDarkMode
+                className={`w-full py-2 pl-10 pr-4 rounded-lg border ${isDarkMode
                     ? "bg-gray-800 border-gray-800 text-white placeholder-gray-400"
                     : "bg-gray-50 border-gray-200"
-                } focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+                  } focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={handleKeyPress}
