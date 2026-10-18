@@ -23,7 +23,7 @@ const UploadNovel = ({ authorData, onNovelCreated, onClose }) => {
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
         // 5MB limit
-        setError("Image size should be less than 5MB");
+        setError("Kích thước ảnh phải nhỏ hơn 5MB");
         return;
       }
       setNewNovel({ ...newNovel, coverPhoto: file });
@@ -36,7 +36,7 @@ const UploadNovel = ({ authorData, onNovelCreated, onClose }) => {
     if (file) {
       if (file.size > 50 * 1024 * 1024) {
         // 50MB limit
-        setError("Video size should be less than 50MB");
+        setError("Kích thước video phải nhỏ hơn 50MB");
         return;
       }
       setNewNovel({ ...newNovel, introVideo: file, videoType: "file" });
@@ -104,7 +104,7 @@ const UploadNovel = ({ authorData, onNovelCreated, onClose }) => {
       onClose();
     } catch (err) {
       console.error("Error uploading novel:", err);
-      setError(err.response?.data?.msg || "Failed to upload novel");
+      setError(err.response?.data?.msg || "Không thể tải lên truyện");
       setTimeout(() => setError(""), 5000);
     } finally {
       setIsSubmitting(false);
@@ -169,7 +169,7 @@ const UploadNovel = ({ authorData, onNovelCreated, onClose }) => {
                       : "from-blue-600 to-purple-600"
                   } bg-clip-text text-transparent`}
                 >
-                  Upload Your Novel
+                  Tải lên truyện của bạn
                 </h2>
               </motion.div>
               <button
@@ -208,7 +208,7 @@ const UploadNovel = ({ authorData, onNovelCreated, onClose }) => {
                         isDarkMode ? "text-gray-300" : "text-gray-700"
                       } mb-2 font-medium`}
                     >
-                      Title
+                      Tiêu đề
                     </label>
                     <input
                       type="text"
@@ -221,7 +221,7 @@ const UploadNovel = ({ authorData, onNovelCreated, onClose }) => {
                           ? "bg-gray-800/50 border-gray-700 text-white"
                           : "bg-white border-gray-200"
                       } border focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300`}
-                      placeholder="Enter your novel's title"
+                      placeholder="Nhập tiêu đề truyện..."
                       required
                     />
                   </motion.div>
@@ -236,7 +236,7 @@ const UploadNovel = ({ authorData, onNovelCreated, onClose }) => {
                         isDarkMode ? "text-gray-300" : "text-gray-700"
                       } mb-2 font-medium`}
                     >
-                      Description
+                      Mô tả
                     </label>
                     <textarea
                       value={newNovel.description}
@@ -251,7 +251,7 @@ const UploadNovel = ({ authorData, onNovelCreated, onClose }) => {
                           ? "bg-gray-800/50 border-gray-700 text-white"
                           : "bg-white border-gray-200"
                       } border focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 h-64`}
-                      placeholder="Write a compelling description for your novel"
+                      placeholder="Viết phần mô tả cuốn hút cho tác phẩm của bạn..."
                       required
                     />
                   </motion.div>
@@ -268,7 +268,7 @@ const UploadNovel = ({ authorData, onNovelCreated, onClose }) => {
                         isDarkMode ? "text-gray-300" : "text-gray-700"
                       } mb-2 font-medium`}
                     >
-                      Cover Photo
+                      Ảnh bìa
                     </label>
                     <div
                       className={`relative rounded-xl ${
@@ -294,16 +294,16 @@ const UploadNovel = ({ authorData, onNovelCreated, onClose }) => {
                             isDarkMode ? "text-gray-400" : "text-gray-600"
                           } text-center`}
                         >
-                          Drop your cover image here or click to browse
+                          Kéo thả ảnh bìa vào đây hoặc nhấp để duyệt
                           <br />
                           <span className="text-xs opacity-75">
-                            (Max size: 5MB)
+                            (Tối đa: 5MB)
                           </span>
                         </span>
                         {imagePreview && (
                           <img
                             src={imagePreview}
-                            alt="Uploaded preview"
+                            alt="Xem trước ảnh tải lên"
                             className="absolute top-2 right-2 h-12 w-12 object-cover border border-gray-300 rounded-md"
                           />
                         )}
@@ -322,14 +322,14 @@ const UploadNovel = ({ authorData, onNovelCreated, onClose }) => {
                           isDarkMode ? "text-gray-300" : "text-gray-700"
                         } font-medium`}
                       >
-                        Intro Video
+                        Video giới thiệu
                       </label>
                       <span
                         className={`text-xs ${
                           isDarkMode ? "text-gray-400" : "text-gray-500"
                         }`}
                       >
-                        Optional
+                        Không bắt buộc
                       </span>
                     </div>
                     <div className="space-y-4">
@@ -356,7 +356,7 @@ const UploadNovel = ({ authorData, onNovelCreated, onClose }) => {
                               ? "bg-transparent text-white"
                               : "bg-transparent"
                           } rounded-xl focus:outline-none`}
-                          placeholder="Paste YouTube video URL"
+                          placeholder="Dán đường dẫn video YouTube..."
                         />
                       </div>
 
@@ -371,7 +371,7 @@ const UploadNovel = ({ authorData, onNovelCreated, onClose }) => {
                             isDarkMode ? "text-gray-400" : "text-gray-500"
                           }`}
                         >
-                          OR
+                          HOẶC
                         </span>
                         <div
                           className={`flex-1 h-px ${
@@ -404,10 +404,10 @@ const UploadNovel = ({ authorData, onNovelCreated, onClose }) => {
                               isDarkMode ? "text-gray-400" : "text-gray-600"
                             } text-center`}
                           >
-                            Upload video file
+                            Tải lên tệp video
                             <br />
                             <span className="text-xs opacity-75">
-                              (Max size: 50MB)
+                              (Tối đa: 50MB)
                             </span>
                           </span>
                           {videoPreview && (
@@ -417,7 +417,7 @@ const UploadNovel = ({ authorData, onNovelCreated, onClose }) => {
                                 src={videoPreview}
                                 className="absolute top-2 right-2 h-12 w-12 object-cover border border-gray-300 rounded-md"
                                 allowFullScreen
-                                title="Video preview"
+                                title="Xem trước video"
                               />
                             ) : (
                               <video
@@ -450,7 +450,7 @@ const UploadNovel = ({ authorData, onNovelCreated, onClose }) => {
                       : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                   } transition-colors`}
                 >
-                  Cancel
+                  Hủy
                 </button>
                 <button
                   type="submit"
@@ -463,7 +463,7 @@ const UploadNovel = ({ authorData, onNovelCreated, onClose }) => {
                     }
                     transition-all duration-300`}
                 >
-                  {isSubmitting ? "Uploading..." : "Upload Novel"}
+                  {isSubmitting ? "Đang tải lên..." : "Tải lên truyện"}
                 </button>
               </motion.div>
             </form>

@@ -41,7 +41,7 @@ const PostUpload = ({ onSuccess, onClose }) => {
       onClose();
     } catch (err) {
       console.error("Error creating post:", err);
-      setError("Failed to create post");
+      setError("Không thể tạo bài viết");
     } finally {
       setIsSubmitting(false);
     }
@@ -98,7 +98,7 @@ const PostUpload = ({ onSuccess, onClose }) => {
                   ? "from-white to-blue-400"
                   : "from-black to-blue-800"
               } bg-clip-text text-transparent`}>
-                Create a New Post
+                Tạo bài viết mới
               </h2>
             </motion.div>
             <button
@@ -129,7 +129,7 @@ const PostUpload = ({ onSuccess, onClose }) => {
               <label className={`block font-medium mb-2 ${
                 isDarkMode ? "text-gray-300" : "text-gray-700"
               }`}>
-                Post Title
+                Tiêu đề bài viết
               </label>
               <div className={`relative rounded-xl overflow-hidden ${
                 isDarkMode ? "bg-gray-800" : "bg-white"
@@ -148,7 +148,7 @@ const PostUpload = ({ onSuccess, onClose }) => {
                       ? "bg-gray-800 text-white placeholder-gray-500"
                       : "bg-white text-gray-900 placeholder-gray-400"
                   } focus:ring-2 focus:ring-blue-500`}
-                  placeholder="Enter your post title"
+                  placeholder="Nhập tiêu đề bài viết..."
                   required
                 />
               </div>
@@ -158,7 +158,7 @@ const PostUpload = ({ onSuccess, onClose }) => {
               <label className={`block font-medium mb-2 ${
                 isDarkMode ? "text-gray-300" : "text-gray-700"
               }`}>
-                Post Content
+                Nội dung bài viết
               </label>
               <div className={`relative rounded-xl overflow-hidden ${
                 isDarkMode ? "bg-gray-800" : "bg-white"
@@ -176,7 +176,7 @@ const PostUpload = ({ onSuccess, onClose }) => {
                       ? "bg-gray-800 text-white placeholder-gray-500"
                       : "bg-white text-gray-900 placeholder-gray-400"
                   } focus:ring-2 focus:ring-blue-500`}
-                  placeholder="Share your thoughts..."
+                  placeholder="Chia sẻ suy nghĩ của bạn..."
                   required
                 />
               </div>
@@ -186,7 +186,7 @@ const PostUpload = ({ onSuccess, onClose }) => {
               <label className={`block font-medium mb-2 ${
                 isDarkMode ? "text-gray-300" : "text-gray-700"
               }`}>
-                Upload Image
+                Tải lên hình ảnh
               </label>
               <div className={`relative rounded-xl overflow-hidden ${
                 isDarkMode ? "bg-gray-800" : "bg-white"
@@ -198,11 +198,11 @@ const PostUpload = ({ onSuccess, onClose }) => {
                   className="absolute inset-0 opacity-0 cursor-pointer"
                 />
                 <FaCloudUploadAlt className={`text-3xl ${isDarkMode ? "text-blue-400" : "text-blue-600"}`} />
-                <span className={`text-sm ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}>Click to upload image</span>
+                <span className={`text-sm ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}>Nhấp để tải lên hình ảnh</span>
                 {imagePreview && (
                   <img
                     src={imagePreview}
-                    alt="Uploaded preview"
+                    alt="Xem trước ảnh tải lên"
                     className="absolute top-2 right-2 h-12 w-12 object-cover border border-gray-300 rounded-md"
                   />
                 )}
@@ -219,7 +219,7 @@ const PostUpload = ({ onSuccess, onClose }) => {
                     : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
                 }`}
               >
-                Cancel
+                Hủy
               </button>
               <button
                   type="submit"
@@ -232,7 +232,7 @@ const PostUpload = ({ onSuccess, onClose }) => {
                     }
                     transition-all duration-300`}
                 >
-                  {isSubmitting ? "Posting..." : "Post"}
+                  {isSubmitting ? "Đang đăng..." : "Đăng bài"}
                 </button>
             </div>
           </form>

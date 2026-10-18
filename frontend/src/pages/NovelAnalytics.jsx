@@ -43,7 +43,7 @@ const NovelAnalytics = () => {
   const handleChapterSubmit = async (e) => {
     e.preventDefault();
     if (!newChapter.chapterName || !newChapter.chapterContent) {
-      alert("Please fill in all fields");
+      alert("Vui lòng điền đầy đủ các trường");
       return;
     }
 
@@ -55,7 +55,7 @@ const NovelAnalytics = () => {
       // alert("Chapter added successfully!");
     } catch (error) {
       console.error("Error adding chapter:", error);
-      alert("Failed to add chapter");
+      alert("Không thể thêm chương");
     }
   };
 
@@ -66,21 +66,21 @@ const NovelAnalytics = () => {
   const stats = [
     {
       icon: <FaBookOpen className="text-2xl text-blue-500" />,
-      label: "Chapters",
+      label: "Chương",
       value: novel.chapters?.length || 0,
       bgColor: "bg-blue-50 dark:bg-blue-900/20",
       textColor: "text-blue-600 dark:text-blue-400",
     },
     {
       icon: <FaHeart className="text-2xl text-red-500" />,
-      label: "Likes",
+      label: "Lượt thích",
       value: novel.likes?.length || 0,
       bgColor: "bg-red-50 dark:bg-red-900/20",
       textColor: "text-red-600 dark:text-red-400",
     },
     {
       icon: <FaComments className="text-2xl text-purple-500" />,
-      label: "Reviews",
+      label: "Đánh giá",
       value: novel.reviews?.length || 0,
       bgColor: "bg-purple-50 dark:bg-purple-900/20",
       textColor: "text-purple-600 dark:text-purple-400",
@@ -207,12 +207,16 @@ const NovelAnalytics = () => {
                 } shadow-xl p-6 mb-8`}
               >
                 <div className="flex space-x-4 mb-6">
-                  {["overview", "chapters", "analytics"].map((tab) => (
+                  {[
+                    { key: "overview", label: "Tổng quan" },
+                    { key: "chapters", label: "Chương" },
+                    { key: "analytics", label: "Thống kê" },
+                  ].map((tab) => (
                     <button
-                      key={tab}
-                      onClick={() => setActiveTab(tab)}
+                      key={tab.key}
+                      onClick={() => setActiveTab(tab.key)}
                       className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                        activeTab === tab
+                        activeTab === tab.key
                           ? `${
                               isDarkMode ? "bg-blue-500" : "bg-blue-600"
                             } text-white`
@@ -223,7 +227,7 @@ const NovelAnalytics = () => {
                             }`
                       }`}
                     >
-                      {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                      {tab.label}
                     </button>
                   ))}
                 </div>
@@ -248,7 +252,7 @@ const NovelAnalytics = () => {
                               isDarkMode ? "text-gray-100" : "text-gray-700"
                             }`}
                           >
-                            Add New Chapter
+                            Thêm chương mới
                           </h3>
                           <form
                             onSubmit={handleChapterSubmit}
@@ -260,7 +264,7 @@ const NovelAnalytics = () => {
                                   isDarkMode ? "text-gray-300" : "text-gray-700"
                                 } mb-2`}
                               >
-                                Chapter Title
+                                Tiêu đề chương
                               </label>
                               <input
                                 type="text"
@@ -276,7 +280,7 @@ const NovelAnalytics = () => {
                                     ? "bg-gray-800 border-gray-700 text-white"
                                     : "bg-white border-gray-300"
                                 } border focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
-                                placeholder="Enter chapter title"
+                                placeholder="Nhập tiêu đề chương..."
                               />
                             </div>
                             <div>
@@ -285,7 +289,7 @@ const NovelAnalytics = () => {
                                   isDarkMode ? "text-gray-300" : "text-gray-700"
                                 } mb-2`}
                               >
-                                Chapter Content
+                                Nội dung chương
                               </label>
                               <textarea
                                 value={newChapter.chapterContent}
@@ -300,7 +304,7 @@ const NovelAnalytics = () => {
                                     ? "bg-gray-800 border-gray-700 text-white"
                                     : "bg-white border-gray-300"
                                 } border focus:ring-2 focus:ring-blue-500 focus:border-transparent h-56`}
-                                placeholder="Write your chapter content here..."
+                                placeholder="Viết nội dung chương tại đây..."
                               />
                             </div>
                             <div className="flex justify-end">
@@ -312,7 +316,7 @@ const NovelAnalytics = () => {
                                     : "bg-gradient-to-r from-blue-500 to-red-500 hover:bg-gradient-to-r from-blue-800 to-red-800"
                                 } text-white font-medium transition-colors`}
                               >
-                                Add Chapter
+                                Thêm chương
                               </button>
                             </div>
                           </form>
@@ -341,7 +345,7 @@ const NovelAnalytics = () => {
                                         : "text-gray-700"
                                     }`}
                                   >
-                                    Chapter {index + 1}:
+                                    Chương {index + 1}:
                                   </span>
                                   <h4
                                     className={`text-lg font-semibold ${
@@ -378,7 +382,7 @@ const NovelAnalytics = () => {
                             }`}
                           >
                             <FaChartLine className="mr-2" />
-                            Performance Metrics
+                            Chỉ số hiệu suất
                           </h3>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {/* Add analytics charts and metrics here */}
@@ -399,7 +403,7 @@ const NovelAnalytics = () => {
                               isDarkMode ? "text-gray-300" : "text-gray-700"
                             }`}
                           >
-                            Novel Information
+                            Thông tin truyện
                           </h3>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
@@ -408,7 +412,7 @@ const NovelAnalytics = () => {
                                   isDarkMode ? "text-gray-400" : "text-gray-600"
                                 } mb-2`}
                               >
-                                Created At
+                                Ngày tạo
                               </h4>
                               <p
                                 className={`text-lg font-medium flex items-center ${
@@ -416,7 +420,7 @@ const NovelAnalytics = () => {
                                 }`}
                               >
                                 <FaClock className="mr-2 text-blue-500" />
-                                {new Date(novel.createdAt).toLocaleDateString()}
+                                {new Date(novel.createdAt).toLocaleDateString("vi-VN")}
                               </p>
                             </div>
                             <div>
@@ -425,7 +429,7 @@ const NovelAnalytics = () => {
                                   isDarkMode ? "text-gray-400" : "text-gray-600"
                                 } mb-2`}
                               >
-                                Last Updated
+                                Cập nhật lần cuối
                               </h4>
                               <p
                                 className={`text-lg font-medium flex items-center ${
@@ -433,7 +437,7 @@ const NovelAnalytics = () => {
                                 }`}
                               >
                                 <FaEdit className="mr-2 text-green-500" />
-                                {new Date(novel.updatedAt).toLocaleDateString()}
+                                {new Date(novel.updatedAt).toLocaleDateString("vi-VN")}
                               </p>
                             </div>
                           </div>

@@ -8,7 +8,7 @@ const UserPosts = ({ posts }) => {
 
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString(undefined, options);
+    return new Date(dateString).toLocaleDateString("vi-VN", options);
   };
 
   const containerVariants = {
@@ -46,7 +46,7 @@ const UserPosts = ({ posts }) => {
           animate={{ opacity: 1, x: 0 }}
           className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
         >
-          Your Creative Space
+          Không gian sáng tạo của bạn
         </motion.h3>
       </div>
       
@@ -56,7 +56,7 @@ const UserPosts = ({ posts }) => {
           animate={{ opacity: 1, scale: 1 }}
           className="text-center py-12 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-2xl shadow-inner"
         >
-          <p className="text-gray-600 dark:text-gray-400">Start sharing your thoughts with the community!</p>
+          <p className="text-gray-600 dark:text-gray-400">Hãy bắt đầu chia sẻ suy nghĩ của bạn với cộng đồng!</p>
         </motion.div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -201,7 +201,7 @@ const UserPosts = ({ posts }) => {
                       className="flex items-center space-x-2 text-gray-500 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400"
                     >
                       <FaHeart />
-                      <span>{selectedPost.likes?.length || 0} likes</span>
+                      <span>{selectedPost.likes?.length || 0} lượt thích</span>
                     </motion.button>
                     <motion.button
                       whileHover={{ scale: 1.1 }}
@@ -209,7 +209,7 @@ const UserPosts = ({ posts }) => {
                       className="flex items-center space-x-2 text-gray-500 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400"
                     >
                       <FaComments />
-                      <span>{selectedPost.comments?.length || 0} comments</span>
+                      <span>{selectedPost.comments?.length || 0} bình luận</span>
                     </motion.button>
                     {/* <motion.button
                       whileHover={{ scale: 1.1 }}

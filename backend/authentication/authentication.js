@@ -15,7 +15,7 @@ function verifyToken(req, res, next) {
     if (!token) {
         return res.status(401).json({
             success: false,
-            message: "Access denied. No token provided."
+            message: "Truy cập bị từ chối. Không tìm thấy token xác thực."
         });
     }
 
@@ -27,7 +27,7 @@ function verifyToken(req, res, next) {
         console.error('JWT Error:', error.message);
         return res.status(401).json({
             success: false,
-            message: "Invalid token"
+            message: "Token không hợp lệ hoặc đã hết hạn"
         });
     }
 }

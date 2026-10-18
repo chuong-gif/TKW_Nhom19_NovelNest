@@ -46,7 +46,7 @@ const SearchResults = () => {
           setResults([]);
         }
       } catch (err) {
-        setError("Failed to fetch search results");
+        setError("Không thể tải kết quả tìm kiếm");
         console.error("Search error:", err);
       } finally {
         setLoading(false);
@@ -106,7 +106,7 @@ const SearchResults = () => {
               isDarkMode ? "text-white" : "text-gray-800"
             }`}
           >
-            Search Results for &quot;{query}&quot;
+            Kết quả tìm kiếm cho &quot;{query}&quot;
           </motion.h1>
 
           {results.length === 0 ? (
@@ -117,11 +117,11 @@ const SearchResults = () => {
                 isDarkMode ? "text-gray-400" : "text-gray-600"
               }`}
             >
-              <p className="text-xl mb-3">No results found for your search.</p>
+              <p className="text-xl mb-3">Không tìm thấy kết quả nào cho tìm kiếm của bạn.</p>
               <p
                 className={`${isDarkMode ? "text-gray-500" : "text-gray-500"}`}
               >
-                Try different keywords or check your spelling.
+                Hãy thử các từ khóa khác hoặc kiểm tra lại chính tả.
               </p>
             </motion.div>
           ) : (

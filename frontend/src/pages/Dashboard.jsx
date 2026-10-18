@@ -112,7 +112,7 @@ const Dashboard = () => {
   }, []);
 
   if (error) {
-    return <div className="text-red-600 text-center p-8">Error: {error}</div>;
+    return <div className="text-red-600 text-center p-8">Lỗi: {error}</div>;
   }
 
   const containerVariants = {
@@ -176,14 +176,14 @@ const Dashboard = () => {
                         : "bg-gradient-to-r from-black to-blue-800 bg-clip-text text-transparent"
                     } mb-5`}
                   >
-                    Welcome back, {userData?.name}! 👋
+                    Chào mừng trở lại, {userData?.name}! 👋
                   </motion.h1>
                   <p
                     className={`mt-5 ${
                       isDarkMode ? "text-gray-300" : "text-gray-600"
                     }`}
                   >
-                    Here&apos;s what&apos;s happening with your account today.
+                    Dưới đây là tổng quan tài khoản của bạn hôm nay.
                   </p>
                 </div>
                 <div className="flex items-center space-x-4">
@@ -198,8 +198,11 @@ const Dashboard = () => {
                         : "bg-blue-100 text-blue-700 border border-blue-200"
                     }`}
                   >
-                    {(userData?.role || "").charAt(0).toUpperCase() +
-                      (userData?.role || "").slice(1)}
+                    {userData?.role === "author"
+                      ? "Tác giả"
+                      : userData?.role === "admin"
+                      ? "Quản trị viên"
+                      : "Độc giả"}
                   </span>
                 </div>
               </div>
@@ -230,7 +233,7 @@ const Dashboard = () => {
                           isDarkMode ? "text-blue-200" : "text-gray-600"
                         } font-medium`}
                       >
-                        Total Novels
+                        Tổng số truyện
                       </p>
                       <p
                         className={`text-2xl font-bold ${
@@ -270,7 +273,7 @@ const Dashboard = () => {
                           isDarkMode ? "text-purple-200" : "text-gray-600"
                         } font-medium`}
                       >
-                        Posts
+                        Bài viết
                       </p>
                       <p
                         className={`text-2xl font-bold ${
@@ -308,7 +311,7 @@ const Dashboard = () => {
                           isDarkMode ? "text-pink-200" : "text-gray-600"
                         } font-medium`}
                       >
-                        Liked Novels
+                        Truyện đã thích
                       </p>
                       <p
                         className={`text-2xl font-bold ${
@@ -350,14 +353,14 @@ const Dashboard = () => {
                           isDarkMode ? "text-green-200" : "text-gray-600"
                         } font-medium`}
                       >
-                        Role Status
+                        Trạng thái vai trò
                       </p>
                       <p
                         className={`text-2xl font-bold ${
                           isDarkMode ? "text-white" : "text-gray-800"
                         }`}
                       >
-                        {userData?.role === "author" ? "Active" : "User"}
+                        {userData?.role === "author" ? "Hoạt động" : "Độc giả"}
                       </p>
                     </div>
                   </div>
@@ -371,7 +374,7 @@ const Dashboard = () => {
                   onClick={() => setShowAuthorForm(true)}
                   className="group bg-gradient-to-r from-blue-500 to-purple-500 text-white px-8 py-3 rounded-xl hover:shadow-lg transition-all duration-300 flex items-center space-x-2"
                 >
-                  <span>Apply for Authorship</span>
+                  <span>Đăng ký làm tác giả</span>
                   <FaChevronRight className="transform group-hover:translate-x-1 transition-transform duration-300" />
                 </motion.button>
               )}
@@ -388,7 +391,7 @@ const Dashboard = () => {
                     : "bg-white text-gray-600 hover:bg-gray-50"
                 }`}
               >
-                Posts
+                Bài viết
               </button>
               {userData?.role === "author" && (
                 <button
@@ -401,7 +404,7 @@ const Dashboard = () => {
                       : "bg-white text-gray-600 hover:bg-gray-50"
                   }`}
                 >
-                  Your Novels
+                  Truyện của bạn
                 </button>
               )}
               <button
@@ -414,7 +417,7 @@ const Dashboard = () => {
                     : "bg-white text-gray-600 hover:bg-gray-50"
                 }`}
               >
-                Liked Novels
+                Truyện đã thích
               </button>
             </motion.div>
 

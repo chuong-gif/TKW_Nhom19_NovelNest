@@ -78,7 +78,7 @@ const Rankings = () => {
                 isDarkMode ? "text-white" : "text-gray-800"
               }`}
             >
-              Top Novels
+              Bảng xếp hạng truyện
             </motion.h1>
 
             <motion.div
@@ -128,7 +128,7 @@ const Rankings = () => {
                           isDarkMode ? "text-gray-300" : "text-gray-600"
                         } absolute top-0 right-0`}
                       >
-                        Author: {novel.author?.penName}
+                        Tác giả: {novel.author?.penName}
                       </p>
                       <p
                         className={`${
@@ -145,12 +145,12 @@ const Rankings = () => {
                       >
                         <div className="flex items-center">
                           <FaHeart className="text-red-500 mr-2" />
-                          <span>{novel.likes?.length || 0} Likes</span>
+                          <span>{novel.likes?.length || 0} lượt thích</span>
                         </div>
                         <span className="mx-4">•</span>
                         <div className="flex items-center">
                           <FaBookOpen className="text-blue-500 mr-2" />
-                          <span>{novel.chapters?.length || 0} Chapters</span>
+                          <span>{novel.chapters?.length || 0} chương</span>
                         </div>
                         {novel.genre && (
                           <>

@@ -42,7 +42,7 @@ const LoginPage = () => {
       /^\d+$/.test(email) ||
       !domainPattern.test(email.split("@")[1])
     ) {
-      setError("Invalid email format...");
+      setError("Định dạng email không hợp lệ...");
       setLoading(false);
       return;
     }
@@ -76,7 +76,7 @@ const LoginPage = () => {
       if (err.response && err.response.data && err.response.data.msg) {
         setError(err.response.data.msg);
       } else {
-        setError("An unexpected error occurred. Please try again.");
+        setError("Đã xảy ra lỗi không mong muốn. Vui lòng thử lại.");
       }
     } finally {
       setLoading(false);
@@ -108,7 +108,7 @@ const LoginPage = () => {
                   animation: "textGlow 1.5s ease-in-out infinite alternate",
                 }}
               >
-                Turn Your Ideas into Reality...
+                Biến ý tưởng của bạn thành hiện thực...
               </h1>
               <p
                 className="text-base md:text-2xl font-normal text-center md:text-left"
@@ -116,8 +116,7 @@ const LoginPage = () => {
                   animation: "fadeIn 1.6s ease-in forwards",
                 }}
               >
-                Start your reading journey today and get together with an
-                evergrowing community.
+                Bắt đầu hành trình đọc sách hôm nay và hòa mình cùng cộng đồng không ngừng lớn mạnh.
               </p>
             </div>
           </div>
@@ -146,7 +145,7 @@ const LoginPage = () => {
                 isDarkMode ? "text-gray-300" : "text-gray-800"
               }`}
             >
-              Login
+              Đăng nhập
             </h3>
 
             <form
@@ -174,7 +173,7 @@ const LoginPage = () => {
 
               <input
                 type="password"
-                placeholder="Password"
+                placeholder="Mật khẩu"
                 className={`w-full py-2 my-2 bg-transparent border-b ${
                   isDarkMode
                     ? "text-white border-gray-600 placeholder-gray-400"
@@ -197,7 +196,7 @@ const LoginPage = () => {
                     className="text-sm"
                     style={{ color: isDarkMode ? "white" : "black" }}
                   >
-                    Remember Me
+                    Ghi nhớ đăng nhập
                   </p>
                 </div>
                 {/* <p className='text-sm font-medium cursor-pointer underline'>Forgot Password?</p> */}
@@ -213,7 +212,7 @@ const LoginPage = () => {
                   } rounded-md p-4 text-center flex items-center justify-center transition-colors duration-300`}
                   disabled={loading}
                 >
-                  {loading ? "Logging in..." : "Login"}
+                  {loading ? "Đang đăng nhập..." : "Đăng nhập"}
                 </button>
 
                 <button
@@ -225,7 +224,7 @@ const LoginPage = () => {
                   } border rounded-md p-4 text-center flex items-center justify-center transition-colors duration-300`}
                   onClick={() => navigate("/signup")}
                 >
-                  Sign Up
+                  Đăng ký
                 </button>
               </div>
 
@@ -242,7 +241,7 @@ const LoginPage = () => {
                       : "text-black/80 bg-[#f5f5f5]"
                   } px-2`}
                 >
-                  or
+                  hoặc
                 </p>
               </div>
 
@@ -255,7 +254,7 @@ const LoginPage = () => {
                   isDarkMode ? "text-gray-300" : "text-[#060606]"
                 }`}
               >
-                Don&apos;t have an account?{" "}
+                Chưa có tài khoản?{" "}
                 <span
                   className={`font-semibold underline cursor-pointer ${
                     isDarkMode
@@ -264,7 +263,7 @@ const LoginPage = () => {
                   }`}
                   onClick={() => navigate("/signup")}
                 >
-                  Sign Up
+                  Đăng ký
                 </span>
               </p>
             </div>

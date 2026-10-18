@@ -26,16 +26,16 @@ const createNovel = async (req, res) => {
         const { title, description, authorId, introVideo } = req.body;
 
         if (!title || !description || !authorId) {
-            return res.status(400).json({ msg: "Title, description, and authorId are required" });
+            return res.status(400).json({ msg: "Vui lòng nhập đầy đủ tiêu đề, mô tả và mã tác giả" });
         }
 
         if (!req.files || !req.files.coverPhoto) {
-            return res.status(400).json({ msg: "Cover photo is required" });
+            return res.status(400).json({ msg: "Vui lòng tải lên ảnh bìa" });
         }
 
         const author = await Author.findById(authorId);
         if (!author) {
-            return res.status(404).json({ msg: "Author not found" });
+            return res.status(404).json({ msg: "Không tìm thấy tác giả" });
         }
 
         const novel = new Novel({
@@ -68,7 +68,7 @@ const createNovel = async (req, res) => {
         return res.status(201).json(novel);
     } catch (error) {
         console.error('Create novel error:', error);
-        return res.status(500).json({ msg: "Failed to create novel" });
+        return res.status(500).json({ msg: "Không thể tạo truyện mới" });
     }
 };
 
@@ -81,7 +81,7 @@ const getAllNovels = async (req, res) => {
         return res.status(200).json(novels);
     } catch (error) {
         console.error('Get all novels error:', error);
-        return res.status(500).json({ msg: 'Failed to fetch novels' });
+        return res.status(500).json({ msg: 'Không thể lấy danh sách truyện' });
     }
 };
 
@@ -91,16 +91,16 @@ const getNovelById = async (req, res) => {
         const novel = await defaultNovelPopulate(Novel.findById(req.params.id));
 
         if (!novel) {
-            return res.status(404).json({ msg: "Novel not found" });
+            return res.status(404).json({ msg: "Không tìm thấy truyện" });
         }
 
         return res.status(200).json(novel);
     } catch (error) {
         console.error('Get novel by ID error:', error);
         if (error.kind === 'ObjectId') {
-            return res.status(400).json({ msg: 'Invalid novel ID format' });
+            return res.status(400).json({ msg: 'Định dạng ID truyện không hợp lệ' });
         }
-        return res.status(500).json({ msg: "Failed to fetch novel" });
+        return res.status(500).json({ msg: "Không thể lấy thông tin truyện" });
     }
 };
 
@@ -114,9 +114,9 @@ const getNovelsByAuthor = async (req, res) => {
     } catch (error) {
         console.error('Get novels by author error:', error);
         if (error.kind === 'ObjectId') {
-            return res.status(400).json({ msg: 'Invalid author ID format' });
+            return res.status(400).json({ msg: 'Định dạng ID tác giả không hợp lệ' });
         }
-        return res.status(500).json({ msg: "Failed to fetch novels" });
+        return res.status(500).json({ msg: "Không thể lấy danh sách truyện của tác giả" });
     }
 };
 
@@ -128,7 +128,7 @@ const updateNovel = async (req, res) => {
 
         const novel = await Novel.findById(novelId);
         if (!novel) {
-            return res.status(404).json({ msg: "Novel not found" });
+            return res.status(404).json({ msg: "Không tìm thấy truyện" });
         }
 
         // Update fields if provided
@@ -156,9 +156,9 @@ const updateNovel = async (req, res) => {
     } catch (error) {
         console.error('Update novel error:', error);
         if (error.kind === 'ObjectId') {
-            return res.status(400).json({ msg: 'Invalid novel ID format' });
+            return res.status(400).json({ msg: 'Định dạng ID truyện không hợp lệ' });
         }
-        return res.status(500).json({ msg: "Failed to update novel" });
+        return res.status(500).json({ msg: "Không thể cập nhật truyện" });
     }
 };
 
@@ -168,7 +168,7 @@ const deleteNovel = async (req, res) => {
         const novelId = req.params.id;
         const novel = await Novel.findById(novelId);
         if (!novel) {
-            return res.status(404).json({ msg: "Novel not found" });
+            return res.status(404).json({ msg: "Không tìm thấy truyện" });
         }
 
         // Clean up orphan references
@@ -202,13 +202,13 @@ const deleteNovel = async (req, res) => {
         // 5. Delete novel
         await novel.deleteOne();
 
-        return res.status(200).json({ msg: "Novel deleted successfully" });
+        return res.status(200).json({ msg: "Xóa truyện thành công" });
     } catch (error) {
         console.error('Delete novel error:', error);
         if (error.kind === 'ObjectId') {
-            return res.status(400).json({ msg: 'Invalid novel ID format' });
+            return res.status(400).json({ msg: 'Định dạng ID truyện không hợp lệ' });
         }
-        return res.status(500).json({ msg: "Failed to delete novel" });
+        return res.status(500).json({ msg: "Không thể xóa truyện" });
     }
 };
 
@@ -218,7 +218,7 @@ const toggleNovelLike = async (req, res) => {
         const { userId } = req.user;
         const { novelId } = req.params;
         if (!userId) {
-            return res.status(400).json({ msg: "userId is required" });
+            return res.status(400).json({ msg: "Yêu cầu có mã người dùng" });
         }
 
         const result = await toggleDocumentLike(Novel, novelId, userId, { field: 'likedNovels' });
@@ -230,9 +230,9 @@ const toggleNovelLike = async (req, res) => {
     } catch (error) {
         console.error('Toggle novel like error:', error);
         if (error.kind === 'ObjectId') {
-            return res.status(400).json({ msg: 'Invalid ID format' });
+            return res.status(400).json({ msg: 'Định dạng ID không hợp lệ' });
         }
-        return res.status(500).json({ msg: "Failed to like novel" });
+        return res.status(500).json({ msg: "Không thể thích truyện" });
     }
 };
 
@@ -241,7 +241,7 @@ const searchNovels = async (req, res) => {
     try {
         const { query } = req.query;
         if (!query || query.length < 3) {
-            return res.status(400).json({ msg: "Search query must be at least 3 characters" });
+            return res.status(400).json({ msg: "Từ khóa tìm kiếm phải có ít nhất 3 ký tự" });
         }
 
         // Use a safe regular expression for case-insensitive partial matching
@@ -258,7 +258,7 @@ const searchNovels = async (req, res) => {
         return res.status(200).json(novels);
     } catch (error) {
         console.error('Search novels error:', error);
-        return res.status(500).json({ msg: "Failed to search novels" });
+        return res.status(500).json({ msg: "Không thể tìm kiếm truyện" });
     }
 };
 

@@ -30,7 +30,7 @@ const SignupPage = () => {
     setError("");
 
     if (/\d/.test(name)) {
-      setError("Name cannot contain numbers...");
+      setError("Tên không được chứa chữ số...");
       setLoading(false);
       return;
     }
@@ -43,7 +43,7 @@ const SignupPage = () => {
       /^\d+$/.test(email) ||
       !domainPattern.test(email.split("@")[1])
     ) {
-      setError("Invalid email format...");
+      setError("Định dạng email không hợp lệ...");
       setLoading(false);
       return;
     }
@@ -61,7 +61,7 @@ const SignupPage = () => {
       if (err.response && err.response.data && err.response.data.msg) {
         setError(err.response.data.msg);
       } else {
-        setError("An unexpected error occurred. Please try again.");
+        setError("Đã xảy ra lỗi không mong muốn. Vui lòng thử lại.");
       }
     } finally {
       setLoading(false);
@@ -93,7 +93,7 @@ const SignupPage = () => {
                   animation: "textGlow 1.5s ease-in-out infinite alternate",
                 }}
               >
-                From Pages to Possibilities...
+                Từ trang sách mở ra muôn vàn cơ hội...
               </h1>
               <p
                 className="text-base md:text-2xl font-normal text-center md:text-left"
@@ -101,7 +101,7 @@ const SignupPage = () => {
                   animation: "fadeIn 1.6s ease-in forwards",
                 }}
               >
-                Start Creating Today and Become Part of Our Expanding Family.
+                Bắt đầu sáng tạo hôm nay và trở thành một phần của đại gia đình chúng tôi.
               </p>
             </div>
           </div>
@@ -130,7 +130,7 @@ const SignupPage = () => {
                 isDarkMode ? "text-gray-300" : "text-gray-800"
               }`}
             >
-              Sign Up
+              Đăng ký
             </h3>
 
             <form
@@ -145,7 +145,7 @@ const SignupPage = () => {
 
               <input
                 type="text"
-                placeholder="Name"
+                placeholder="Họ và tên"
                 className={`w-full py-2 my-2 bg-transparent border-b ${
                   isDarkMode
                     ? "text-white border-gray-600 placeholder-gray-400"
@@ -171,7 +171,7 @@ const SignupPage = () => {
 
               <input
                 type="password"
-                placeholder="Password"
+                placeholder="Mật khẩu"
                 className={`w-full py-2 my-2 bg-transparent border-b ${
                   isDarkMode
                     ? "text-white border-gray-600 placeholder-gray-400"
@@ -192,7 +192,7 @@ const SignupPage = () => {
                   } rounded-md p-4 text-center flex items-center justify-center transition-colors duration-300`}
                   disabled={loading}
                 >
-                  {loading ? "Signing up..." : "Sign Up"}
+                  {loading ? "Đang đăng ký..." : "Đăng ký"}
                 </button>
 
                 <button
@@ -204,7 +204,7 @@ const SignupPage = () => {
                   } border rounded-md p-4 text-center flex items-center justify-center transition-colors duration-300`}
                   onClick={() => navigate("/login")}
                 >
-                  Login
+                  Đăng nhập
                 </button>
               </div>
 
@@ -221,7 +221,7 @@ const SignupPage = () => {
                       : "text-black/80 bg-[#f5f5f5]"
                   } px-2`}
                 >
-                  or
+                  hoặc
                 </p>
               </div>
 
@@ -234,7 +234,7 @@ const SignupPage = () => {
                   isDarkMode ? "text-gray-300" : "text-[#060606]"
                 }`}
               >
-                Already have an account?{" "}
+                Đã có tài khoản?{" "}
                 <span
                   className={`font-semibold underline cursor-pointer ${
                     isDarkMode
@@ -243,7 +243,7 @@ const SignupPage = () => {
                   }`}
                   onClick={() => navigate("/login")}
                 >
-                  Login
+                  Đăng nhập
                 </span>
               </p>
             </div>

@@ -21,7 +21,7 @@ function WeeklyBest() {
         .slice(0, 3);
       setNovels(sortedNovels);
     } catch {
-      setError("Failed to fetch novels");
+      setError("Không thể tải danh sách truyện");
     } finally {
       setIsLoading(false);
     }
@@ -72,7 +72,7 @@ function WeeklyBest() {
   if (novels.length === 0) {
     return (
       <div className={`text-center py-10 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
-        <p>No novels available</p>
+        <p>Chưa có truyện nào</p>
       </div>
     );
   }
@@ -92,7 +92,7 @@ function WeeklyBest() {
           <div className="absolute inset-0">
             <img
               src={novels[currentIndex].coverPhoto.url}
-              alt="background"
+              alt="Hình nền"
               className="w-full h-full object-cover filter blur-sm scale-105"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/30"></div>
@@ -137,11 +137,11 @@ function WeeklyBest() {
                 >
                   <div className="flex items-center gap-2">
                     <FaHeart className="text-red-500" />
-                    <span>{novels[currentIndex].likes?.length || 0} Likes</span>
+                    <span>{novels[currentIndex].likes?.length || 0} lượt thích</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <FaBookOpen className="text-blue-500" />
-                    <span>{novels[currentIndex].chapters?.length || 0} Chapters</span>
+                    <span>{novels[currentIndex].chapters?.length || 0} chương</span>
                   </div>
                   {/* <div className="flex items-center gap-2">
                     <FaStar className="text-yellow-500" />

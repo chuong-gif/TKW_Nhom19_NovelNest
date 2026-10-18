@@ -37,7 +37,8 @@ const NovelCover = ({ novel, onLike, isLiked }) => {
               src={novel.coverPhoto.url}
               alt={novel.title}
               onError={(e) => {
-                e.target.src = "/default-cover.jpg";
+                e.target.onerror = null;
+                e.target.src = "/ink-logo-outline.png";
               }}
             />
             <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -47,7 +48,7 @@ const NovelCover = ({ novel, onLike, isLiked }) => {
               onClick={handleReadNowClick}
               className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-4 px-6 rounded-xl transition duration-300 transform hover:-translate-y-0.5 shadow-lg hover:shadow-xl"
             >
-              Read Now
+              Đọc ngay
             </button>
             <button
               onClick={handleLike}
@@ -73,7 +74,7 @@ const NovelCover = ({ novel, onLike, isLiked }) => {
                   d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
                 />
               </svg>
-              <span>{novel.likes?.length || 0} Likes</span>
+              <span>{novel.likes?.length || 0} lượt thích</span>
             </button>
           </div>
         </div>
@@ -100,9 +101,9 @@ const NovelCover = ({ novel, onLike, isLiked }) => {
                   : "text-gray-800 hover:text-gray-900"
               } transition-colors duration-300`}
             >
-              <span>Author:</span>
+              <span>Tác giả:</span>
               <span className="italic">
-                {novel.author?.penName || "Unknown Author"}
+                {novel.author?.penName || "Tác giả ẩn danh"}
               </span>
             </p>
             <div>
@@ -111,7 +112,7 @@ const NovelCover = ({ novel, onLike, isLiked }) => {
                   isDarkMode ? "bg-gradient-to-r from-white to-blue-800 bg-clip-text text-transparent" : "text-gray-900"
                 }`}
               >
-                Description
+                Mô tả
               </h2>
               <p
                 className={`text-base leading-relaxed whitespace-pre-line transition-transform duration-300 ${
@@ -136,14 +137,14 @@ const NovelCover = ({ novel, onLike, isLiked }) => {
                 : "text-gray-900"
             }`}
           >
-            Introduction Video
+            Video giới thiệu
           </h2>
           <div className="relative w-full lg:w-4/5 mx-auto overflow-hidden rounded-xl shadow-2xl">
             {novel.introVideo.url.includes("youtube.com") ? (
               <iframe
                 className="w-full aspect-video rounded-lg"
                 src={novel.introVideo.url}
-                title="YouTube video player"
+                title="Video giới thiệu truyện"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
               ></iframe>
@@ -153,7 +154,7 @@ const NovelCover = ({ novel, onLike, isLiked }) => {
                 controls
                 src={novel.introVideo.url}
               >
-                Your browser does not support the video tag.
+                Trình duyệt của bạn không hỗ trợ phát video.
               </video>
             )}
           </div>

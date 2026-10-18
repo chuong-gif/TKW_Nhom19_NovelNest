@@ -29,7 +29,7 @@ const ReviewDetails = () => {
         );
         setReview(reviewResponse.data);
       } catch (err) {
-        setError("Failed to fetch review details or replies");
+        setError("Không thể tải chi tiết đánh giá hoặc câu trả lời");
         console.error(err);
       } finally {
         setLoading(false);
@@ -118,7 +118,7 @@ const ReviewDetails = () => {
           isDarkMode ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"
         } flex justify-center items-center`}
       >
-        <div className="text-xl font-medium">Review not found</div>
+        <div className="text-xl font-medium">Không tìm thấy đánh giá</div>
       </div>
     );
 
@@ -168,7 +168,7 @@ const ReviewDetails = () => {
               </div>
               <div className="flex items-center gap-2">
                 <FaClock className="text-xl" />
-                <span>{new Date(review.createdAt).toLocaleDateString()}</span>
+                <span>{new Date(review.createdAt).toLocaleDateString("vi-VN")}</span>
               </div>
             </div>
 
@@ -192,7 +192,7 @@ const ReviewDetails = () => {
                     isDarkMode ? "text-white" : "text-gray-900"
                   }`}
                 >
-                  Replies
+                  Câu trả lời
                 </h3>
               </div>
 
@@ -227,14 +227,14 @@ const ReviewDetails = () => {
                             >
                               <div className="flex items-center gap-2">
                                 <FaUserCircle />
-                                <span>{reply.user?.name || "Anonymous"}</span>
+                                <span>{reply.user?.name || "Ẩn danh"}</span>
                               </div>
                               <div className="flex items-center gap-2">
                                 <FaClock />
                                 <span>
                                   {new Date(
                                     reply.createdAt
-                                  ).toLocaleDateString()}
+                                  ).toLocaleDateString("vi-VN")}
                                 </span>
                               </div>
                             </div>
@@ -270,7 +270,7 @@ const ReviewDetails = () => {
                       isDarkMode ? "text-gray-400" : "text-gray-600"
                     } text-center py-8`}
                   >
-                    No replies yet. Be the first to reply!
+                    Chưa có câu trả lời nào. Hãy là người đầu tiên trả lời!
                   </motion.p>
                 )}
               </AnimatePresence>
@@ -289,7 +289,7 @@ const ReviewDetails = () => {
                         ? "bg-gray-800 text-white placeholder-gray-500"
                         : "bg-white text-gray-900 placeholder-gray-400"
                     } focus:ring-2 focus:ring-purple-500`}
-                    placeholder="Share your thoughts on this review..."
+                    placeholder="Chia sẻ suy nghĩ của bạn về đánh giá này..."
                   />
                 </div>
                 <div className="flex justify-end mt-4">
@@ -308,7 +308,7 @@ const ReviewDetails = () => {
                     <FaPaperPlane
                       className={isSubmitting ? "animate-ping" : ""}
                     />
-                    {isSubmitting ? "Sending..." : "Send Reply"}
+                    {isSubmitting ? "Đang gửi..." : "Gửi trả lời"}
                   </button>
                 </div>
               </div>

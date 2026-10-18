@@ -35,7 +35,7 @@ const AuthorSection = ({ novelsData, onUploadNovel }) => {
 
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
-    return new Date(dateString).toLocaleDateString(undefined, options);
+    return new Date(dateString).toLocaleDateString("vi-VN", options);
   };
 
   return (
@@ -51,13 +51,13 @@ const AuthorSection = ({ novelsData, onUploadNovel }) => {
           animate={{ opacity: 1, x: 0 }}
           className="text-3xl font-bold bg-gradient-to-r from-yellow-600 to-pink-400 bg-clip-text text-transparent"
         >
-          Your Published Novels
+          Truyện đã xuất bản của bạn
         </motion.h3>
         <button
           onClick={() => setShowNovelForm(true)}
           className="px-6 py-2 bg-gradient-to-r from-yellow-600 to-yellow-800 text-white rounded-lg hover:shadow-lg transition-all duration-300 hover:scale-105"
         >
-          Upload Novel
+          Đăng truyện mới
         </button>
       </div>
 
@@ -69,7 +69,7 @@ const AuthorSection = ({ novelsData, onUploadNovel }) => {
         >
           <FaBook className="mx-auto text-4xl mb-4 text-gray-400 dark:text-gray-600" />
           <p className="text-gray-600 dark:text-gray-400 text-lg">
-            Start your journey as an author by uploading your first novel!
+            Bắt đầu hành trình sáng tác bằng việc đăng tải tác phẩm đầu tiên của bạn!
           </p>
         </motion.div>
       ) : (

@@ -38,7 +38,7 @@ const DisplayBooks = () => {
         const response = await api.get('/novels');
         setNovels(response.data);
       } catch (err) {
-        setError("Failed to fetch novels");
+        setError("Không thể tải danh sách truyện");
         console.error(err);
       } finally {
         setLoading(false);
@@ -145,7 +145,7 @@ const DisplayBooks = () => {
               onClick={loadMoreRows}
               className="flex items-center gap-2 px-6 py-3 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
             >
-              Explore More <FaChevronDown />
+              Khám phá thêm <FaChevronDown />
             </button>
           </motion.div>
         )}

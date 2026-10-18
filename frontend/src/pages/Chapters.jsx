@@ -22,7 +22,7 @@ const Chapters = () => {
                 const response = await api.get(`/chapters/${id}/chapters`);
                 setChapters(response.data);
             } catch (err) {
-                setError('Failed to fetch chapters');
+                setError('Không thể tải danh sách chương');
                 console.error(err);
             } finally {
                 setLoading(false);
@@ -63,7 +63,7 @@ const Chapters = () => {
                             ? 'bg-white'
                             : 'bg-black'
                     } bg-clip-text text-transparent`}>
-                        Available Chapters
+                        Danh sách chương
                     </h2>
                 </motion.div>
 
@@ -119,7 +119,7 @@ const Chapters = () => {
                                                 bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900
                                                 text-white shadow-lg hover:shadow-xl`}
                                         >
-                                            <span>Read Chapter</span>
+                                            <span>Đọc chương</span>
                                             <motion.div
                                                 animate={{
                                                     x: hoveredChapter === chapter._id ? [0, 5, 0] : 0
@@ -146,7 +146,7 @@ const Chapters = () => {
                             }`}
                         >
                             <FaBook className="text-6xl mx-auto mb-4 opacity-50" />
-                            <p className="text-xl font-medium">No chapters available yet</p>
+                            <p className="text-xl font-medium">Chưa có chương nào</p>
                         </motion.div>
                     )}
                 </AnimatePresence>

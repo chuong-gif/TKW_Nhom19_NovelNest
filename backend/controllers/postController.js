@@ -11,17 +11,17 @@ const addPosts = async (req, res) => {
         if (!title || !content) {
             return res
                 .status(400)
-                .json({ msg: "Title and content are required" });
+                .json({ msg: "Vui lòng nhập đầy đủ tiêu đề và nội dung" });
         }
 
         if (!req.file) {
-            return res.status(400).json({ msg: "Image file is required" });
+            return res.status(400).json({ msg: "Vui lòng chọn tệp hình ảnh" });
         }
 
         // Check if user exists
         const user = await User.findById(userId);
         if (!user) {
-            return res.status(404).json({ msg: "User not found" });
+            return res.status(404).json({ msg: "Không tìm thấy người dùng" });
         }
 
         const post = new Post({
@@ -51,9 +51,9 @@ const addPosts = async (req, res) => {
     } catch (error) {
         console.error("Add post error:", error);
         if (error.message.includes('image')) {
-            return res.status(400).json({ msg: "Invalid image format or size" });
+            return res.status(400).json({ msg: "Định dạng hoặc dung lượng hình ảnh không hợp lệ" });
         }
-        return res.status(500).json({ msg: "Failed to create post" });
+        return res.status(500).json({ msg: "Không thể tạo bài viết" });
     }
 };
 
@@ -68,7 +68,7 @@ const getAllPosts = async (req, res) => {
         return res.status(200).json(posts);
     } catch (error) {
         console.error("Get all posts error:", error);
-        return res.status(500).json({ msg: "Failed to fetch posts" });
+        return res.status(500).json({ msg: "Không thể lấy danh sách bài viết" });
     }
 };
 
@@ -80,19 +80,19 @@ const addCommentToPost = async (req, res) => {
         const { postId } = req.params;
 
         if (!content) {
-            return res.status(400).json({ msg: "Content is required" });
+            return res.status(400).json({ msg: "Vui lòng nhập nội dung bình luận" });
         }
 
         // Check if user exists
         const user = await User.findById(userId);
         if (!user) {
-            return res.status(404).json({ msg: "User not found" });
+            return res.status(404).json({ msg: "Không tìm thấy người dùng" });
         }
 
         // Find the post
         const post = await Post.findById(postId);
         if (!post) {
-            return res.status(404).json({ msg: "Post not found" });
+            return res.status(404).json({ msg: "Không tìm thấy bài viết" });
         }
 
         // Add comment to post
@@ -111,9 +111,9 @@ const addCommentToPost = async (req, res) => {
     } catch (error) {
         console.error("Add comment error:", error);
         if (error.kind === "ObjectId") {
-            return res.status(400).json({ msg: "Invalid ID format" });
+            return res.status(400).json({ msg: "Định dạng ID không hợp lệ" });
         }
-        return res.status(500).json({ msg: "Failed to add comment" });
+        return res.status(500).json({ msg: "Không thể gửi bình luận" });
     }
 };
 
@@ -125,16 +125,16 @@ const getPostById = async (req, res) => {
             .populate("comments.user", "-password");
 
         if (!post) {
-            return res.status(404).json({ msg: "Post not found" });
+            return res.status(404).json({ msg: "Không tìm thấy bài viết" });
         }
 
         return res.status(200).json(post);
     } catch (error) {
         console.error("Get post by ID error:", error);
         if (error.kind === "ObjectId") {
-            return res.status(400).json({ msg: "Invalid post ID format" });
+            return res.status(400).json({ msg: "Định dạng ID bài viết không hợp lệ" });
         }
-        return res.status(500).json({ msg: "Failed to fetch post" });
+        return res.status(500).json({ msg: "Không thể lấy thông tin bài viết" });
     }
 };
 
@@ -151,9 +151,9 @@ const getPostsByUserId = async (req, res) => {
     } catch (error) {
         console.error("Get posts by user ID error:", error);
         if (error.kind === "ObjectId") {
-            return res.status(400).json({ msg: "Invalid user ID format" });
+            return res.status(400).json({ msg: "Định dạng ID người dùng không hợp lệ" });
         }
-        return res.status(500).json({ msg: "Failed to fetch posts" });
+        return res.status(500).json({ msg: "Không thể lấy danh sách bài viết" });
     }
 };
 
@@ -162,7 +162,7 @@ const togglePostLike = async (req, res) => {
         const { userId } = req.user;
         const { postId } = req.params;
         if (!userId) {
-            return res.status(400).json({ msg: "userId is required" });
+            return res.status(400).json({ msg: "Yêu cầu có mã người dùng" });
         }
 
         const result = await toggleDocumentLike(Post, postId, userId);
@@ -174,9 +174,9 @@ const togglePostLike = async (req, res) => {
     } catch (error) {
         console.error("Toggle post like error:", error);
         if (error.kind === "ObjectId") {
-            return res.status(400).json({ msg: "Invalid ID format" });
+            return res.status(400).json({ msg: "Định dạng ID không hợp lệ" });
         }
-        return res.status(500).json({ msg: "Failed to toggle post like" });
+        return res.status(500).json({ msg: "Không thể thích bài viết" });
     }
 };
 
@@ -188,7 +188,7 @@ const toggleCommentLike = async (req, res) => {
 
         // Validate inputs
         if (!userId) {
-            return res.status(400).json({ msg: "userId is required" });
+            return res.status(400).json({ msg: "Yêu cầu có mã người dùng" });
         }
 
         const result = await toggleSubdocumentLike(Post, postId, 'comments', commentId, userId);
@@ -200,9 +200,9 @@ const toggleCommentLike = async (req, res) => {
     } catch (error) {
         console.error("Toggle comment like error:", error);
         if (error.kind === "ObjectId") {
-            return res.status(400).json({ msg: "Invalid ID format" });
+            return res.status(400).json({ msg: "Định dạng ID không hợp lệ" });
         }
-        return res.status(500).json({ msg: "Failed to toggle comment like" });
+        return res.status(500).json({ msg: "Không thể thích bình luận" });
     }
 };
 
@@ -212,7 +212,7 @@ const deletePost = async (req, res) => {
         const { id } = req.params;
         const post = await Post.findById(id);
         if (!post) {
-            return res.status(404).json({ msg: "Post not found" });
+            return res.status(404).json({ msg: "Không tìm thấy bài viết" });
         }
 
         // Clean up reference in User.posts
@@ -222,13 +222,13 @@ const deletePost = async (req, res) => {
 
         await post.deleteOne();
 
-        return res.status(200).json({ msg: "Post deleted successfully" });
+        return res.status(200).json({ msg: "Xóa bài viết thành công" });
     } catch (error) {
         console.error("Delete post error:", error);
         if (error.kind === "ObjectId") {
-            return res.status(400).json({ msg: "Invalid post ID format" });
+            return res.status(400).json({ msg: "Định dạng ID bài viết không hợp lệ" });
         }
-        return res.status(500).json({ msg: "Failed to delete post" });
+        return res.status(500).json({ msg: "Không thể xóa bài viết" });
     }
 };
 

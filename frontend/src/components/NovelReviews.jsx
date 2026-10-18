@@ -58,13 +58,13 @@ const NovelReviews = ({ reviews, novelId }) => {
               : "bg-gradient-to-r from-black to-blue-400 bg-clip-text text-transparent"
           }`}
         >
-          Community Reviews
+          Đánh giá từ cộng đồng
         </h2>
         <button
           onClick={() => setShowReviewForm(true)}
           className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-3 px-8 rounded-xl transition duration-300 transform hover:-translate-y-0.5 shadow-lg hover:shadow-xl"
         >
-          Write a Review
+          Viết đánh giá
         </button>
       </div>
 
@@ -94,13 +94,13 @@ const NovelReviews = ({ reviews, novelId }) => {
                       isDarkMode ? "text-gray-400" : "text-gray-600"
                     }`}>
                       <FaComment className="text-blue-500" />
-                      <span>by {review.user?.name || "Anonymous"}</span>
+                      <span>bởi {review.user?.name || "Ẩn danh"}</span>
                     </div>
                     <div className={`flex items-center space-x-2 ${
                       isDarkMode ? "text-gray-400" : "text-gray-600"
                     }`}>
                       <FaClock className="text-blue-500" />
-                      <span>{new Date(review.createdAt).toLocaleDateString()}</span>
+                      <span>{new Date(review.createdAt).toLocaleDateString("vi-VN")}</span>
                     </div>
                   </div>
                 </div>
@@ -138,13 +138,13 @@ const NovelReviews = ({ reviews, novelId }) => {
             <p className={`text-xl font-medium mb-6 ${
               isDarkMode ? "text-gray-300" : "text-gray-600"
             }`}>
-              No reviews yet. Be the first to share your thoughts!
+              Chưa có đánh giá nào. Hãy là người đầu tiên chia sẻ cảm nhận của bạn!
             </p>
             <button
               onClick={() => setShowReviewForm(true)}
               className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-800 text-white font-semibold py-3 px-8 rounded-xl transition duration-300 transform hover:-translate-y-0.5 shadow-lg hover:shadow-xl"
             >
-              Write First Review
+              Viết đánh giá đầu tiên
             </button>
           </div>
         )}

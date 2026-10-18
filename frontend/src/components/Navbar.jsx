@@ -120,7 +120,7 @@ const Navbar = () => {
             <div className="relative" ref={searchRef}>
               <input
                 type="text"
-                placeholder="Search novels..."
+                placeholder="Tìm truyện..."
                 className={`w-full py-2.5 pl-12 pr-4 rounded-xl border ${
                   isDarkMode
                     ? "bg-gray-600/50 border-gray-800 text-white placeholder-gray-400 focus:border-blue-500"
@@ -187,7 +187,7 @@ const Navbar = () => {
                         isDarkMode ? "text-gray-400" : "text-gray-500"
                       }`}
                     >
-                      No suggestions found
+                      Không tìm thấy gợi ý nào
                     </div>
                   )}
                 </div>
@@ -206,7 +206,7 @@ const Navbar = () => {
               }`}
             >
               <FaRankingStar className={"text-lg"} />
-              <span>Rankings</span>
+              <span>Bảng xếp hạng</span>
             </button>
             <button
               onClick={() => navigate("/forum")}
@@ -217,7 +217,7 @@ const Navbar = () => {
               }`}
             >
               <FaComments className="text-lg" />
-              <span>Forum</span>
+              <span>Diễn đàn</span>
             </button>
 
             {isAuthenticated() && (
@@ -230,7 +230,7 @@ const Navbar = () => {
                 }`}
               >
                 <FaUser className="text-lg" />
-                <span>Profile</span>
+                <span>Hồ sơ</span>
               </button>
             )}
 
@@ -260,7 +260,7 @@ const Navbar = () => {
               } hover:text-white`}
             >
               <FaSignOutAlt className="text-lg" />
-              <span>{isAuthenticated() ? "Logout" : "Login"}</span>
+              <span>{isAuthenticated() ? "Đăng xuất" : "Đăng nhập"}</span>
             </button>
           </div>
 
@@ -291,7 +291,7 @@ const Navbar = () => {
             <div className="relative">
               <input
                 type="text"
-                placeholder="Search novels..."
+                placeholder="Tìm truyện..."
                 className={`w-full py-2 pl-10 pr-4 rounded-lg border ${
                   isDarkMode
                     ? "bg-gray-800 border-gray-800 text-white placeholder-gray-400"
@@ -312,7 +312,7 @@ const Navbar = () => {
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <FaHome className="text-black dark:text-white" />{" "}
-              <span className="text-black dark:text-white">Home</span>
+              <span className="text-black dark:text-white">Trang chủ</span>
             </Link>
             <Link
               to="/rankings"
@@ -320,7 +320,7 @@ const Navbar = () => {
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <FaRankingStar className="text-black dark:text-white" />{" "}
-              <span className="text-black dark:text-white">Rankings</span>
+              <span className="text-black dark:text-white">Bảng xếp hạng</span>
             </Link>
             <Link
               to="/forum"
@@ -328,7 +328,7 @@ const Navbar = () => {
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <FaComments className="text-black dark:text-white" />{" "}
-              <span className="text-black dark:text-white">Forum</span>
+              <span className="text-black dark:text-white">Diễn đàn</span>
             </Link>
             {isAuthenticated() && (
               <Link
@@ -337,7 +337,7 @@ const Navbar = () => {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 <FaUser className="text-black dark:text-white" />{" "}
-                <span className="text-black dark:text-white">Profile</span>
+                <span className="text-black dark:text-white">Hồ sơ</span>
               </Link>
             )}
 
@@ -352,12 +352,12 @@ const Navbar = () => {
                 {isDarkMode ? (
                   <>
                     <FaSun className="text-yellow-400" />
-                    <span>Light Mode</span>
+                    <span>Chế độ sáng</span>
                   </>
                 ) : (
                   <>
                     <FaMoon />
-                    <span>Dark Mode</span>
+                    <span>Chế độ tối</span>
                   </>
                 )}
               </button>
@@ -371,7 +371,7 @@ const Navbar = () => {
               className="w-full bg-red-500 text-white p-2 rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center space-x-2"
             >
               <FaSignOutAlt />
-              <span>{isAuthenticated() ? "Logout" : "Login"}</span>
+              <span>{isAuthenticated() ? "Đăng xuất" : "Đăng nhập"}</span>
             </button>
           </div>
         </div>

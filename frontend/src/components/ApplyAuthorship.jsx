@@ -23,7 +23,7 @@ const ApplyAuthorship = ({ onRequest, onClose }) => {
       onClose();
     } catch (error) {
       console.error("Error requesting authorship:", error);
-      setError("Failed to submit authorship request");
+      setError("Không thể gửi yêu cầu đăng ký làm tác giả");
     }
   };
 
@@ -70,13 +70,13 @@ const ApplyAuthorship = ({ onRequest, onClose }) => {
               <h2 className={`text-2xl font-bold ${
                 isDarkMode ? "text-white" : "text-gray-900"
               }`}>
-                Become an Author
+                Đăng ký làm tác giả
               </h2>
             </div>
             <p className={`mt-2 ${
               isDarkMode ? "text-gray-400" : "text-gray-600"
             }`}>
-              Join our community of writers and share your stories with the world
+              Gia nhập cộng đồng tác giả và chia sẻ những câu chuyện của bạn với độc giả
             </p>
           </div>
 
@@ -103,7 +103,7 @@ const ApplyAuthorship = ({ onRequest, onClose }) => {
                 }`}>
                   <div className="flex items-center space-x-2">
                     <FaPen className="text-sm" />
-                    <span>Pen Name</span>
+                    <span>Bút danh</span>
                   </div>
                 </label>
                 <input
@@ -120,7 +120,7 @@ const ApplyAuthorship = ({ onRequest, onClose }) => {
                       ? "bg-gray-800 border-gray-700 text-white focus:border-blue-500"
                       : "bg-white border-gray-200 focus:border-blue-500"
                   } border focus:ring-2 focus:ring-blue-500/20`}
-                  placeholder="Enter your pen name"
+                  placeholder="Nhập bút danh của bạn"
                   required
                 />
               </div>
@@ -131,7 +131,7 @@ const ApplyAuthorship = ({ onRequest, onClose }) => {
                 }`}>
                   <div className="flex items-center space-x-2">
                     <FaBookOpen className="text-sm" />
-                    <span>Bio</span>
+                    <span>Giới thiệu bản thân</span>
                   </div>
                 </label>
                 <textarea
@@ -144,7 +144,7 @@ const ApplyAuthorship = ({ onRequest, onClose }) => {
                       ? "bg-gray-800 border-gray-700 text-white focus:border-blue-500"
                       : "bg-white border-gray-200 focus:border-blue-500"
                   } border focus:ring-2 focus:ring-blue-500/20 h-32`}
-                  placeholder="Tell us about yourself and your writing journey..."
+                  placeholder="Giới thiệu về bạn và hành trình sáng tác..."
                   required
                 />
               </div>
@@ -161,7 +161,7 @@ const ApplyAuthorship = ({ onRequest, onClose }) => {
                       : "text-gray-600 hover:bg-gray-100"
                   } transition-all`}
                 >
-                  Cancel
+                  Hủy
                 </motion.button>
                 <motion.button
                   whileHover={{ scale: 1.02 }}
@@ -173,7 +173,7 @@ const ApplyAuthorship = ({ onRequest, onClose }) => {
                       : "bg-gradient-to-r from-blue-500 to-purple-500"
                   } text-white shadow-lg shadow-blue-500/20 hover:shadow-xl hover:shadow-blue-500/30 transition-all duration-300`}
                 >
-                  Submit Application
+                  Gửi đơn đăng ký
                 </motion.button>
               </div>
             </form>

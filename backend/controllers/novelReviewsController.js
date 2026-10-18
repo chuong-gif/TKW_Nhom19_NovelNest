@@ -29,19 +29,19 @@ const addReview = async (req, res) => {
         if (!reviewTitle || !reviewContent) {
             return res
                 .status(400)
-                .json({ msg: "Review title, content and userId are required" });
+                .json({ msg: "Vui lòng nhập đầy đủ tiêu đề và nội dung đánh giá" });
         }
 
         // Check if user exists
         const user = await User.findById(userId);
         if (!user) {
-            return res.status(404).json({ msg: "User not found" });
+            return res.status(404).json({ msg: "Không tìm thấy người dùng" });
         }
 
         // Check if novel exists
         const novel = await Novel.findById(novelId);
         if (!novel) {
-            return res.status(404).json({ msg: "Novel not found" });
+            return res.status(404).json({ msg: "Không tìm thấy truyện" });
         }
 
         // Create new review
@@ -68,9 +68,9 @@ const addReview = async (req, res) => {
     } catch (error) {
         console.error("Add review error:", error);
         if (error.kind === "ObjectId") {
-            return res.status(400).json({ msg: "Invalid ID format" });
+            return res.status(400).json({ msg: "Định dạng ID không hợp lệ" });
         }
-        return res.status(500).json({ msg: "Failed to add review" });
+        return res.status(500).json({ msg: "Không thể gửi đánh giá" });
     }
 };
 
@@ -82,9 +82,9 @@ const getNovelReviews = async (req, res) => {
     } catch (error) {
         console.error("Get novel reviews error:", error);
         if (error.kind === "ObjectId") {
-            return res.status(400).json({ msg: "Invalid novel ID format" });
+            return res.status(400).json({ msg: "Định dạng ID truyện không hợp lệ" });
         }
-        return res.status(500).json({ msg: "Failed to fetch reviews" });
+        return res.status(500).json({ msg: "Không thể lấy danh sách đánh giá" });
     }
 };
 
@@ -96,19 +96,19 @@ const addReplyToReview = async (req, res) => {
         const { reviewId } = req.params;
 
         if (!content || !userId) {
-            return res.status(400).json({ msg: "Content and userId are required" });
+            return res.status(400).json({ msg: "Vui lòng nhập nội dung phản hồi" });
         }
 
         // Check if user exists
         const user = await User.findById(userId);
         if (!user) {
-            return res.status(404).json({ msg: "User not found" });
+            return res.status(404).json({ msg: "Không tìm thấy người dùng" });
         }
 
         // Find the review
         const review = await Review.findById(reviewId);
         if (!review) {
-            return res.status(404).json({ msg: "Review not found" });
+            return res.status(404).json({ msg: "Không tìm thấy đánh giá" });
         }
 
         // Add reply to review
@@ -127,9 +127,9 @@ const addReplyToReview = async (req, res) => {
     } catch (error) {
         console.error("Add reply error:", error);
         if (error.kind === "ObjectId") {
-            return res.status(400).json({ msg: "Invalid ID format" });
+            return res.status(400).json({ msg: "Định dạng ID không hợp lệ" });
         }
-        return res.status(500).json({ msg: "Failed to add reply" });
+        return res.status(500).json({ msg: "Không thể gửi câu trả lời" });
     }
 };
 
@@ -139,7 +139,7 @@ const toggleReviewLike = async (req, res) => {
         const { userId } = req.user;
         const { reviewId } = req.params;
         if (!userId) {
-            return res.status(400).json({ msg: "userId is required" });
+            return res.status(400).json({ msg: "Yêu cầu có mã người dùng" });
         }
 
         const result = await toggleDocumentLike(Review, reviewId, userId);
@@ -151,9 +151,9 @@ const toggleReviewLike = async (req, res) => {
     } catch (error) {
         console.error("Toggle review like error:", error);
         if (error.kind === "ObjectId") {
-            return res.status(400).json({ msg: "Invalid ID format" });
+            return res.status(400).json({ msg: "Định dạng ID không hợp lệ" });
         }
-        return res.status(500).json({ msg: "Failed to toggle review like" });
+        return res.status(500).json({ msg: "Không thể thích đánh giá" });
     }
 };
 
@@ -163,7 +163,7 @@ const toggleReplyLike = async (req, res) => {
         const { userId } = req.user;
         const { reviewId, replyId } = req.params;
         if (!userId) {
-            return res.status(400).json({ msg: "userId is required" });
+            return res.status(400).json({ msg: "Yêu cầu có mã người dùng" });
         }
 
         const result = await toggleSubdocumentLike(Review, reviewId, 'replies', replyId, userId);
@@ -175,9 +175,9 @@ const toggleReplyLike = async (req, res) => {
     } catch (error) {
         console.error("Toggle reply like error:", error);
         if (error.kind === "ObjectId") {
-            return res.status(400).json({ msg: "Invalid ID format" });
+            return res.status(400).json({ msg: "Định dạng ID không hợp lệ" });
         }
-        return res.status(500).json({ msg: "Failed to toggle reply like" });
+        return res.status(500).json({ msg: "Không thể thích câu trả lời" });
     }
 };
 
@@ -189,7 +189,7 @@ const deleteReview = async (req, res) => {
         // Find the review
         const review = await Review.findById(reviewId);
         if (!review) {
-            return res.status(404).json({ msg: "Review not found" });
+            return res.status(404).json({ msg: "Không tìm thấy đánh giá" });
         }
 
         // Clean up orphan references
@@ -209,13 +209,13 @@ const deleteReview = async (req, res) => {
         // 3. Delete the review
         await review.deleteOne();
 
-        return res.status(200).json({ msg: "Review deleted successfully" });
+        return res.status(200).json({ msg: "Xóa đánh giá thành công" });
     } catch (error) {
         console.error("Delete review error:", error);
         if (error.kind === "ObjectId") {
-            return res.status(400).json({ msg: "Invalid review ID format" });
+            return res.status(400).json({ msg: "Định dạng ID đánh giá không hợp lệ" });
         }
-        return res.status(500).json({ msg: "Failed to delete review" });
+        return res.status(500).json({ msg: "Không thể xóa đánh giá" });
     }
 };
 
@@ -226,16 +226,16 @@ const getReviewsById = async (req, res) => {
         const review = await populateReviewQuery(Review.findById(reviewId));
 
         if (!review) {
-            return res.status(404).json({ msg: "Review not found" });
+            return res.status(404).json({ msg: "Không tìm thấy đánh giá" });
         }
 
         return res.status(200).json(review);
     } catch (error) {
         console.error("Get review by ID error:", error);
         if (error.kind === "ObjectId") {
-            return res.status(400).json({ msg: "Invalid review ID format" });
+            return res.status(400).json({ msg: "Định dạng ID đánh giá không hợp lệ" });
         }
-        return res.status(500).json({ msg: "Failed to fetch review" });
+        return res.status(500).json({ msg: "Không thể lấy thông tin đánh giá" });
     }
 };
 
@@ -248,9 +248,9 @@ const getReviewsByNovelId = async (req, res) => {
     } catch (error) {
         console.error("Get reviews by novel ID error:", error);
         if (error.kind === "ObjectId") {
-            return res.status(400).json({ msg: "Invalid novel ID format" });
+            return res.status(400).json({ msg: "Định dạng ID truyện không hợp lệ" });
         }
-        return res.status(500).json({ msg: "Failed to fetch reviews" });
+        return res.status(500).json({ msg: "Không thể lấy danh sách đánh giá" });
     }
 };
 

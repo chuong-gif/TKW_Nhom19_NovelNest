@@ -15,7 +15,7 @@ const Footer = () => {
               Novel Hub
             </h2>
             <p className="text-gray-600 text-sm leading-relaxed dark:text-gray-400">
-              Your gateway to endless stories. Discover, read, and create captivating novels in our growing community.
+              Cổng kết nối tới thế giới truyện bất tận. Khám phá, đọc và sáng tác những tác phẩm lôi cuốn cùng cộng đồng không ngừng lớn mạnh.
             </p>
             <div className="flex space-x-5 dark:hidden">
               <a href="#" className="text-gray-400 hover:text-blue-500 transform hover:-translate-y-1 transition-all duration-300">
@@ -36,28 +36,28 @@ const Footer = () => {
           {/* Quick Links */}
           <div className="space-y-4">
             <h3 className="text-xl font-semibold relative inline-block">
-              Quick Links
+              Liên kết nhanh
               <span className="absolute bottom-0 left-0 w-1/2 h-0.5 bg-gradient-to-r from-blue-500 to-transparent"></span>
             </h3>
             <ul className="space-y-3 dark:hidden">
               <li>
                 <Link to="/home" className="text-gray-600 hover:text-blue-500 transition-colors duration-300 flex items-center group">
-                  <span className="transform group-hover:translate-x-2 transition-transform duration-300">Home</span>
+                  <span className="transform group-hover:translate-x-2 transition-transform duration-300">Trang chủ</span>
                 </Link>
               </li>
               <li>
                 <Link to="/rankings" className="text-gray-600 hover:text-blue-500 transition-colors duration-300 flex items-center group">
-                  <span className="transform group-hover:translate-x-2 transition-transform duration-300">Rankings</span>
+                  <span className="transform group-hover:translate-x-2 transition-transform duration-300">Bảng xếp hạng</span>
                 </Link>
               </li>
               <li>
                 <Link to="/forum" className="text-gray-600 hover:text-blue-500 transition-colors duration-300 flex items-center group">
-                  <span className="transform group-hover:translate-x-2 transition-transform duration-300">Community Forum</span>
+                  <span className="transform group-hover:translate-x-2 transition-transform duration-300">Diễn đàn cộng đồng</span>
                 </Link>
               </li>
               <li>
                 <Link to="/profile" className="text-gray-600 hover:text-blue-500 transition-colors duration-300 flex items-center group">
-                  <span className="transform group-hover:translate-x-2 transition-transform duration-300">Dashboard</span>
+                  <span className="transform group-hover:translate-x-2 transition-transform duration-300">Bảng điều khiển</span>
                 </Link>
               </li>
             </ul>
@@ -65,22 +65,22 @@ const Footer = () => {
             <ul className="space-y-3 hidden dark:block">
               <li>
                 <Link to="/home" className="text-gray-400 hover:text-white transition-colors duration-300 flex items-center group">
-                  <span className="transform group-hover:translate-x-2 transition-transform duration-300">Home</span>
+                  <span className="transform group-hover:translate-x-2 transition-transform duration-300">Trang chủ</span>
                 </Link>
               </li>
               <li>
                 <Link to="/rankings" className="text-gray-400 hover:text-white transition-colors duration-300 flex items-center group">
-                  <span className="transform group-hover:translate-x-2 transition-transform duration-300">Rankings</span>
+                  <span className="transform group-hover:translate-x-2 transition-transform duration-300">Bảng xếp hạng</span>
                 </Link>
               </li>
               <li>
                 <Link to="/forum" className="text-gray-400 hover:text-white transition-colors duration-300 flex items-center group">
-                  <span className="transform group-hover:translate-x-2 transition-transform duration-300">Community Forum</span>
+                  <span className="transform group-hover:translate-x-2 transition-transform duration-300">Diễn đàn cộng đồng</span>
                 </Link>
               </li>
               <li>
                 <Link to="/profile" className="text-gray-400 hover:text-white transition-colors duration-300 flex items-center group">
-                  <span className="transform group-hover:translate-x-2 transition-transform duration-300">Dashboard</span>
+                  <span className="transform group-hover:translate-x-2 transition-transform duration-300">Bảng điều khiển</span>
                 </Link>
               </li>
             </ul>
@@ -89,11 +89,11 @@ const Footer = () => {
           {/* Genres */}
           <div className="space-y-4 dark:hidden">
             <h3 className="text-xl font-semibold relative inline-block">
-              Popular Genres
+              Thể loại phổ biến
               <span className="absolute bottom-0 left-0 w-1/2 h-0.5 bg-gradient-to-r from-purple-500 to-transparent"></span>
             </h3>
             <div className="grid grid-cols-2 gap-3">
-              {['Fantasy', 'Romance', 'Mystery', 'Sci-Fi', 'Adventure', 'Horror'].map((genre) => (
+              {['Huyền huyễn', 'Lãng mạn', 'Bí ẩn', 'Khoa học viễn tưởng', 'Phiêu lưu', 'Kinh dị'].map((genre) => (
                 <span key={genre} className="text-gray-600 hover:text-blue-500 transition-colors duration-300 cursor-pointer transform hover:translate-x-1 hover:scale-105">
                   {genre}
                 </span>
@@ -103,11 +103,11 @@ const Footer = () => {
 
           <div className="space-y-4 hidden dark:block">
             <h3 className="text-xl font-semibold relative inline-block">
-              Popular Genres
+              Thể loại phổ biến
               <span className="absolute bottom-0 left-0 w-1/2 h-0.5 bg-gradient-to-r from-purple-500 to-transparent"></span>
             </h3>
             <div className="grid grid-cols-2 gap-3">
-              {['Fantasy', 'Romance', 'Mystery', 'Sci-Fi', 'Adventure', 'Horror'].map((genre) => (
+              {['Huyền huyễn', 'Lãng mạn', 'Bí ẩn', 'Khoa học viễn tưởng', 'Phiêu lưu', 'Kinh dị'].map((genre) => (
                 <span key={genre} className="text-gray-400 hover:text-white transition-colors duration-300 cursor-pointer transform hover:translate-x-1 hover:scale-105">
                   {genre}
                 </span>
@@ -118,22 +118,13 @@ const Footer = () => {
                    {/* Newsletter */}
          <div className="space-y-4">
             <h3 className="text-xl font-semibold relative inline-block">
-              Stay Updated
+              Cập nhật thông tin
               <span className="absolute bottom-0 left-0 w-1/2 h-0.5 bg-gradient-to-r from-pink-500 to-transparent"></span>
             </h3>
             <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-              Subscribe to our newsletter for the latest updates and featured stories.
+              Đăng ký nhận thông tin mới nhất và các câu chuyện nổi bật.
             </p>
             <div className="flex flex-col space-y-2">
- {/*}             <input
-                type="email"
-                placeholder="Enter your email"
-                className="bg-gray-800/50 text-white px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 placeholder-gray-500"
-              />
-              <button className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 px-4 py-3 rounded-md hover:opacity-90 transition-all duration-300 transform hover:scale-[1.02] focus:scale-[0.98]">
-                Subscribe
-              </button>
-*/}
             </div>
           </div>
 
@@ -144,17 +135,17 @@ const Footer = () => {
         <div className="border-t border-gray-200 mt-16 pt-8 dark:border-gray-800">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className="text-gray-600 dark:text-gray-400 text-sm">
-              &copy; {currentYear} Novel Hub. All rights reserved. Made with ❤️ by NK
+              &copy; {currentYear} Novel Hub. Bản quyền thuộc về Novel Hub. Thực hiện với ❤️ bởi NK
             </p>
             <div className="flex flex-wrap justify-center gap-6">
               <Link to="/privacy" className="text-gray-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-white text-sm transition-colors duration-300">
-                Privacy Policy
+                Chính sách bảo mật
               </Link>
               <Link to="/terms" className="text-gray-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-white text-sm transition-colors duration-300">
-                Terms of Service
+                Điều khoản dịch vụ
               </Link>
               <Link to="/contact" className="text-gray-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-white text-sm transition-colors duration-300">
-                Contact Us
+                Liên hệ chúng tôi
               </Link>
             </div>
           </div>

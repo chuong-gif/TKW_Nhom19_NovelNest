@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 const LikedNovels = ({ likedNovels }) => {
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
-    return new Date(dateString).toLocaleDateString(undefined, options);
+    return new Date(dateString).toLocaleDateString("vi-VN", options);
   };
 
   const containerVariants = {
@@ -42,7 +42,7 @@ const LikedNovels = ({ likedNovels }) => {
           animate={{ opacity: 1, x: 0 }}
           className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent"
         >
-          Your Reading Collection
+          Bộ sưu tập truyện yêu thích
         </motion.h3>
       </div>
 
@@ -54,7 +54,7 @@ const LikedNovels = ({ likedNovels }) => {
         >
           <FaBookOpen className="mx-auto text-4xl mb-4 text-gray-400 dark:text-gray-600" />
           <p className="text-gray-600 dark:text-gray-400 text-lg">
-            Start exploring and collecting your favorite novels!
+            Hãy bắt đầu khám phá và lưu lại những bộ truyện bạn yêu thích!
           </p>
         </motion.div>
       ) : (

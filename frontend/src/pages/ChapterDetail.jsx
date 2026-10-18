@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { motion, AnimatePresence } from "framer-motion";
@@ -8,6 +8,44 @@ import LoadingScreen from "../utils/LoadingScreen";
 import Footer from "../utils/Footer";
 import api from "../services/api";
 
+const splitTextIntoChunks = (text, maxLength = 180) => {
+  if (!text) return [];
+  const sentences = text.match(/[^.!?\n]+[.!?\n]*/g) || [text];
+  const chunks = [];
+  let currentChunk = "";
+
+  for (const sentence of sentences) {
+    if ((currentChunk + sentence).length <= maxLength) {
+      currentChunk += sentence;
+    } else {
+      if (currentChunk.trim()) {
+        chunks.push(currentChunk.trim());
+      }
+      if (sentence.length > maxLength) {
+        for (let i = 0; i < sentence.length; i += maxLength) {
+          chunks.push(sentence.slice(i, i + maxLength).trim());
+        }
+        currentChunk = "";
+      } else {
+        currentChunk = sentence;
+      }
+    }
+  }
+  if (currentChunk.trim()) {
+    chunks.push(currentChunk.trim());
+  }
+  return chunks.filter(Boolean);
+};
+
+const getVietnameseVoice = () => {
+  if (!("speechSynthesis" in window)) return null;
+  const voices = window.speechSynthesis.getVoices();
+  const exactVi = voices.find((v) => v.lang === "vi-VN");
+  if (exactVi) return exactVi;
+  const viVoice = voices.find((v) => v.lang && v.lang.toLowerCase().startsWith("vi"));
+  return viVoice || null;
+};
+
 const ChapterDetail = () => {
   const { novelId, chapterId } = useParams();
   const [chapter, setChapter] = useState(null);
@@ -15,10 +53,10 @@ const ChapterDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const [speechUtterance, setSpeechUtterance] = useState(null);
   const { isDarkMode } = useContext(DarkModeContext);
   const [showControls, setShowControls] = useState(true);
-  let controlsTimeout;
+  const sessionRef = useRef(0);
+  const controlsTimeoutRef = useRef(null);
 
   useEffect(() => {
     const fetchChapterAndChaptersList = async () => {
@@ -31,7 +69,7 @@ const ChapterDetail = () => {
         );
         setChapter(chapterResponse.data);
       } catch (err) {
-        setError("Failed to fetch chapter");
+        setError("Không thể tải nội dung chương");
         console.error(err);
       } finally {
         setLoading(false);
@@ -39,12 +77,25 @@ const ChapterDetail = () => {
     };
 
     fetchChapterAndChaptersList();
+  }, [novelId, chapterId]);
+
+  useEffect(() => {
+    if ("speechSynthesis" in window) {
+      window.speechSynthesis.getVoices();
+      const handleVoicesChanged = () => {
+        window.speechSynthesis.getVoices();
+      };
+      window.speechSynthesis.onvoiceschanged = handleVoicesChanged;
+    }
+
     return () => {
-      if (speechUtterance) {
+      sessionRef.current += 1;
+      if ("speechSynthesis" in window) {
         window.speechSynthesis.cancel();
       }
+      setIsSpeaking(false);
     };
-  }, [novelId, chapterId]);
+  }, [chapterId]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -53,8 +104,10 @@ const ChapterDetail = () => {
   useEffect(() => {
     const handleScroll = () => {
       setShowControls(true);
-      clearTimeout(controlsTimeout);
-      controlsTimeout = setTimeout(() => {
+      if (controlsTimeoutRef.current) {
+        clearTimeout(controlsTimeoutRef.current);
+      }
+      controlsTimeoutRef.current = setTimeout(() => {
         setShowControls(false);
       }, 2000);
     };
@@ -62,45 +115,70 @@ const ChapterDetail = () => {
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      clearTimeout(controlsTimeout);
+      if (controlsTimeoutRef.current) {
+        clearTimeout(controlsTimeoutRef.current);
+      }
     };
   }, []);
 
   const handleTextToSpeech = () => {
-    if (!chapter) return;
-
-    if (isSpeaking) {
-      window.speechSynthesis.cancel();
-      setIsSpeaking(false);
-      setSpeechUtterance(null);
+    if (!("speechSynthesis" in window)) {
+      alert("Trình duyệt của bạn không hỗ trợ đọc văn bản.");
       return;
     }
 
-    const utterance = new SpeechSynthesisUtterance(chapter.chapterContent);
-    utterance.rate = 1.0;
-    utterance.pitch = 1.0;
-    utterance.volume = 1.0;
-
-    const voices = window.speechSynthesis.getVoices();
-    const englishVoice = voices.find((voice) => voice.lang.startsWith("en-"));
-    if (englishVoice) {
-      utterance.voice = englishVoice;
+    if (isSpeaking) {
+      sessionRef.current += 1;
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+      return;
     }
 
-    utterance.onend = () => {
-      setIsSpeaking(false);
-      setSpeechUtterance(null);
-    };
+    if (!chapter?.chapterContent) return;
 
-    utterance.onerror = () => {
-      setIsSpeaking(false);
-      setSpeechUtterance(null);
-      console.error("Speech synthesis error occurred");
-    };
+    sessionRef.current += 1;
+    const currentSession = sessionRef.current;
+    window.speechSynthesis.cancel();
 
-    window.speechSynthesis.speak(utterance);
+    const chunks = splitTextIntoChunks(chapter.chapterContent);
+    if (chunks.length === 0) return;
+
+    const voice = getVietnameseVoice();
     setIsSpeaking(true);
-    setSpeechUtterance(utterance);
+
+    let currentIdx = 0;
+    const speakNextChunk = () => {
+      if (sessionRef.current !== currentSession) return;
+      if (currentIdx >= chunks.length) {
+        setIsSpeaking(false);
+        return;
+      }
+
+      const utterance = new SpeechSynthesisUtterance(chunks[currentIdx]);
+      utterance.lang = "vi-VN";
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+      utterance.volume = 1.0;
+      if (voice) {
+        utterance.voice = voice;
+      }
+
+      utterance.onend = () => {
+        if (sessionRef.current !== currentSession) return;
+        currentIdx += 1;
+        speakNextChunk();
+      };
+
+      utterance.onerror = (e) => {
+        console.error("Speech synthesis error occurred", e);
+        if (sessionRef.current !== currentSession) return;
+        setIsSpeaking(false);
+      };
+
+      window.speechSynthesis.speak(utterance);
+    };
+
+    speakNextChunk();
   };
 
   if (loading) return <LoadingScreen />;
@@ -164,12 +242,12 @@ const ChapterDetail = () => {
                 {isSpeaking ? (
                   <>
                     <FaVolumeMute className="text-xl" />
-                    <span>Stop Reading</span>
+                    <span>Dừng đọc</span>
                   </>
                 ) : (
                   <>
                     <FaVolumeUp className="text-xl" />
-                    <span>Read Aloud</span>
+                    <span>Đọc to</span>
                   </>
                 )}
               </motion.button>
@@ -205,14 +283,14 @@ const ChapterDetail = () => {
                         text-white shadow-lg hover:shadow-xl`}
                     >
                       <FaArrowLeft className="text-sm sm:text-base" />
-                      <span>Previous</span>
+                      <span>Chương trước</span>
                     </Link>
                   ) : (
                     <span className={`flex items-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 rounded-xl text-sm sm:text-base
                       ${isDarkMode ? 'text-gray-400 bg-gray-800/50' : 'text-gray-500 bg-gray-100/50'}`}
                     >
                       <FaArrowLeft className="text-sm sm:text-base opacity-50" />
-                      <span>First</span>
+                      <span>Đầu</span>
                     </span>
                   )}
 
@@ -226,7 +304,7 @@ const ChapterDetail = () => {
                       } shadow-lg hover:shadow-xl`}
                   >
                     <FaBook className="text-sm sm:text-base" />
-                    <span>Overview</span>
+                    <span>Tổng quan</span>
                   </Link>
 
                   {nextChapter ? (
@@ -237,14 +315,14 @@ const ChapterDetail = () => {
                         bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900
                         text-white shadow-lg hover:shadow-xl`}
                     >
-                      <span>Next</span>
+                      <span>Chương sau</span>
                       <FaArrowRight className="text-sm sm:text-base" />
                     </Link>
                   ) : (
                     <span className={`flex items-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 rounded-xl text-sm sm:text-base
                       ${isDarkMode ? 'text-gray-400 bg-gray-800/50' : 'text-gray-500 bg-gray-100/50'}`}
                     >
-                      <span>Last</span>
+                      <span>Cuối</span>
                       <FaArrowRight className="text-sm sm:text-base opacity-50" />
                     </span>
                   )}

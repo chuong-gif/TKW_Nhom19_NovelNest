@@ -7,13 +7,13 @@ const signupUser = async (req, res) => {
         const { name, email, password } = req.body;
 
         if (!name || !email || !password) {
-            return res.status(400).send("Bad request...");
+            return res.status(400).send("Yêu cầu không hợp lệ. Vui lòng điền đầy đủ thông tin.");
         }
 
         const existingUser = await User.findOne({ email });
         if (existingUser) {
             return res.status(400).json({
-                msg: "Email already exists..."
+                msg: "Email này đã được đăng ký tài khoản..."
             });
         }
 
@@ -33,7 +33,7 @@ const signupUser = async (req, res) => {
         return res.status(201).json(userResponse);
     } catch (error) {
         console.error('Signup error:', error);
-        return res.status(500).json({ msg: "Internal server error" });
+        return res.status(500).json({ msg: "Lỗi máy chủ nội bộ" });
     }
 };
 
@@ -44,14 +44,14 @@ const loginUser = async (req, res) => {
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(400).json({
-                msg: "Email doesn't exist..."
+                msg: "Email không tồn tại trên hệ thống..."
             });
         }
 
         const isMatch = await user.comparePassword(password);
         if (!isMatch) {
             return res.status(400).json({
-                msg: "Incorrect password..."
+                msg: "Mật khẩu không chính xác..."
             });
         }
 
@@ -64,14 +64,14 @@ const loginUser = async (req, res) => {
         });
 
         return res.status(200).json({
-            msg: "Login successful...",
+            msg: "Đăng nhập thành công...",
             token,
             userId: user._id
         });
 
     } catch (error) {
         console.error('Login error:', error);
-        return res.status(500).json({ msg: "Internal server error" });
+        return res.status(500).json({ msg: "Lỗi máy chủ nội bộ" });
     }
 };
 
@@ -84,7 +84,7 @@ const logoutUser = (req, res) => {
     });
     
     return res.status(200).json({
-        msg: "Logout successful..."
+        msg: "Đăng xuất thành công..."
     });
 };
 

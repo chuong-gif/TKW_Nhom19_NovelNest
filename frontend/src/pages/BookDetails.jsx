@@ -46,7 +46,7 @@ const BookDetails = () => {
         );
       } catch (err) {
         console.error("Error fetching novel details:", err);
-        setError(err.response?.data?.msg || "Failed to fetch novel details");
+        setError(err.response?.data?.msg || "Không thể tải thông tin truyện");
       }
     };
 
@@ -70,7 +70,7 @@ const BookDetails = () => {
       );
     } catch (err) {
       console.error("Like error:", err);
-      setError(err.response?.data?.msg || "Failed to update like status");
+      setError(err.response?.data?.msg || "Không thể cập nhật lượt thích");
     }
   };
 
@@ -83,7 +83,7 @@ const BookDetails = () => {
             className="bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-800 text-red-700 dark:text-red-300 px-4 py-3 rounded relative"
             role="alert"
           >
-            <strong className="font-bold">Error! </strong>
+            <strong className="font-bold">Lỗi! </strong>
             <span className="block sm:inline">{error}</span>
           </div>
         </div>

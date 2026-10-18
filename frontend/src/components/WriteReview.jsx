@@ -27,7 +27,7 @@ const WriteReview = ({ novelId, onSuccess, onClose, onNewReview }) => {
       onClose();
     } catch (error) {
       console.error("Error adding review:", error);
-      setError("Failed to submit review. Please try again.");
+      setError("Không thể gửi đánh giá. Vui lòng thử lại.");
     } finally {
       setIsSubmitting(false);
     }
@@ -84,7 +84,7 @@ const WriteReview = ({ novelId, onSuccess, onClose, onNewReview }) => {
                   ? "from-white to-purple-400"
                   : "from-purple-600 to-blue-600"
               } bg-clip-text text-transparent`}>
-                Share Your Thoughts
+                Chia sẻ suy nghĩ của bạn
               </h2>
             </motion.div>
             <button
@@ -115,7 +115,7 @@ const WriteReview = ({ novelId, onSuccess, onClose, onNewReview }) => {
               <label className={`block font-medium mb-2 ${
                 isDarkMode ? "text-gray-300" : "text-gray-700"
               }`}>
-                Review Title
+                Tiêu đề đánh giá
               </label>
               <div className={`relative rounded-xl overflow-hidden ${
                 isDarkMode ? "bg-gray-800" : "bg-white"
@@ -134,7 +134,7 @@ const WriteReview = ({ novelId, onSuccess, onClose, onNewReview }) => {
                       ? "bg-gray-800 text-white placeholder-gray-500"
                       : "bg-white text-gray-900 placeholder-gray-400"
                   } focus:ring-2 focus:ring-purple-500`}
-                  placeholder="Give your review a catchy title"
+                  placeholder="Đặt tiêu đề cuốn hút cho đánh giá..."
                   required
                 />
                 <FaPen className={`absolute right-4 top-1/2 -translate-y-1/2 ${
@@ -147,7 +147,7 @@ const WriteReview = ({ novelId, onSuccess, onClose, onNewReview }) => {
               <label className={`block font-medium mb-2 ${
                 isDarkMode ? "text-gray-300" : "text-gray-700"
               }`}>
-                Your Review
+                Nội dung đánh giá
               </label>
               <div className={`relative rounded-xl overflow-hidden ${
                 isDarkMode ? "bg-gray-800" : "bg-white"
@@ -165,7 +165,7 @@ const WriteReview = ({ novelId, onSuccess, onClose, onNewReview }) => {
                       ? "bg-gray-800 text-white placeholder-gray-500"
                       : "bg-white text-gray-900 placeholder-gray-400"
                   } focus:ring-2 focus:ring-purple-500`}
-                  placeholder="Share your detailed thoughts about the novel..."
+                  placeholder="Chia sẻ cảm nhận chi tiết của bạn về tác phẩm..."
                   required
                 />
               </div>
@@ -181,7 +181,7 @@ const WriteReview = ({ novelId, onSuccess, onClose, onNewReview }) => {
                     : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
                 }`}
               >
-                Cancel
+                Hủy
               </button>
               <button
                 type="submit"
@@ -191,7 +191,7 @@ const WriteReview = ({ novelId, onSuccess, onClose, onNewReview }) => {
                   text-white shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed
                   ${isSubmitting ? "animate-pulse" : ""}`}
               >
-                {isSubmitting ? "Submitting..." : "Share Review"}
+                {isSubmitting ? "Đang gửi..." : "Gửi đánh giá"}
               </button>
             </div>
           </form>

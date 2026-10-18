@@ -30,21 +30,21 @@ const GoogleSignIn = () => {
           Cookies.set('userId', data.userId);
           
           await update();
-          toast.success('Successfully signed in with Google!');
+          toast.success('Đăng nhập Google thành công!');
           navigate('/home');
         } else {
-          toast.error(data.msg || 'Login failed. Please try again.');
+          toast.error(data.msg || 'Đăng nhập thất bại. Vui lòng thử lại.');
         }
       } catch (error) {
         console.error("Google login failed:", error);
-        toast.error(error.response?.data?.msg || 'Authentication failed. Please try again.');
+        toast.error(error.response?.data?.msg || 'Xác thực thất bại. Vui lòng thử lại.');
       } finally {
         setIsLoading(false);
       }
     },
     onError: (error) => {
       console.error('Google OAuth Error:', error);
-      toast.error('Failed to connect to Google. Please try again.');
+      toast.error('Không thể kết nối với Google. Vui lòng thử lại.');
       setIsLoading(false);
     }
   });
@@ -56,11 +56,11 @@ const GoogleSignIn = () => {
         className='w-full flex items-center justify-center bg-white border border-black/40 rounded-md my-4 p-4 cursor-pointer disabled:opacity-50'
       >
         {isLoading ? (
-          <span>Signing in...</span>
+          <span>Đang đăng nhập...</span>
         ) : (
           <>
             <img src={googleIcon} className='h-6 mr-2' alt="Google Icon" />
-            Sign in with Google
+            Đăng nhập bằng Google
           </>
         )}
     </button>

@@ -21,7 +21,7 @@ function Forum() {
         .slice(0, 3);
       setPosts(sortedPosts);
     } catch (err) {
-      setError("Failed to fetch posts");
+      setError("Không thể tải danh sách bài viết");
       console.error(err);
     } finally {
       setLoading(false);
@@ -78,7 +78,7 @@ function Forum() {
       <div className={`text-center py-10 ${
         isDarkMode ? 'text-gray-300' : 'text-gray-700'
       }`}>
-        <p>No posts available</p>
+        <p>Hiện chưa có bài viết nào</p>
       </div>
     );
   }
@@ -128,7 +128,7 @@ function Forum() {
                 <div className="flex items-center gap-2">
                   <FaUser className={isDarkMode ? 'text-gray-400' : 'text-gray-600'} />
                   <span className={isDarkMode ? 'text-gray-300' : 'text-gray-700'}>
-                    by {posts[currentIndex].user?.name || "Anonymous"}
+                    bởi {posts[currentIndex].user?.name || "Ẩn danh"}
                   </span>
                 </div>
               </motion.div>
@@ -164,11 +164,11 @@ function Forum() {
                 >
                   <div className="flex items-center gap-2">
                     <FaHeart className="text-red-500" />
-                    <span>{posts[currentIndex].likes?.length || 0} Likes</span>
+                    <span>{posts[currentIndex].likes?.length || 0} lượt thích</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <FaComments className="text-blue-500" />
-                    <span>{posts[currentIndex].comments?.length || 0} Comments</span>
+                    <span>{posts[currentIndex].comments?.length || 0} bình luận</span>
                   </div>
                 </motion.div>
               </div>

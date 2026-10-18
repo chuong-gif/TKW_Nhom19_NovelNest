@@ -18,7 +18,7 @@ function HomePage() {
             className="flex justify-center text-4xl sm:text-5xl lg:text-6xl font-extrabold text-center sm:text-left py-4 sm:py-6 lg:py-8 transition-colors duration-200"
             style={{ color: isDarkMode ? "white" : "black" }}
           >
-            Trending Novels
+            Truyện thịnh hành
           </h1>
           <div className="w-full">
             <DisplayBooks />

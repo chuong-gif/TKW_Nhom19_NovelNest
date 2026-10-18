@@ -132,7 +132,7 @@ const ForumPage = () => {
                         : "bg-gray-100 hover:bg-gray-200"
                     } rounded-full transition-all duration-300 transform hover:-translate-y-0.5`}
                   >
-                    Share your thoughts with the community...
+                    Chia sẻ suy nghĩ của bạn với cộng đồng...
                   </button>
                   <motion.button
                     whileHover={{ scale: 1.1 }}
@@ -189,7 +189,7 @@ const ForumPage = () => {
                               <span>{post.user.name}</span>
                               <span>•</span>
                               <span>
-                                {new Date(post.createdAt).toLocaleString()}
+                                {new Date(post.createdAt).toLocaleString("vi-VN")}
                               </span>
                             </div>
                           </div>
@@ -323,7 +323,7 @@ const ForumPage = () => {
                                         : "text-gray-700"
                                     }
                                   >
-                                    {comment.user?.name || "Anonymous"}
+                                    {comment.user?.name || "Ẩn danh"}
                                   </p>
                                 </motion.div>
                               ))}
@@ -338,7 +338,7 @@ const ForumPage = () => {
                                       e.target.value
                                     )
                                   }
-                                  placeholder="Add a comment..."
+                                  placeholder="Thêm bình luận..."
                                   className={`flex-1 px-4 py-2 rounded-lg transition-colors ${
                                     isDarkMode
                                       ? "bg-gray-700 text-gray-100 border-gray-600 focus:border-blue-500"
@@ -351,7 +351,7 @@ const ForumPage = () => {
                                   onClick={() => handleAddComment(post._id)}
                                   className="px-6 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
                                 >
-                                  Post
+                                  Đăng
                                 </motion.button>
                               </div>
                             </motion.div>

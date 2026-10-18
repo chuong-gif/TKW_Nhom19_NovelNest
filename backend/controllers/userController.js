@@ -13,7 +13,7 @@ const getAllUsers = async (req, res) => {
         return res.status(200).json(users);
     } catch (error) {
         console.error('Get all users error:', error);
-        return res.status(500).json({ message: 'Failed to fetch users' });
+        return res.status(500).json({ message: 'Không thể lấy danh sách người dùng' });
     }
 };
 
@@ -32,11 +32,11 @@ const getUserByName = async (req, res) => {
         if (users.length > 0) {
             return res.status(200).json(users);
         } else {
-            return res.status(404).json({ message: "No users found" });
+            return res.status(404).json({ message: "Không tìm thấy người dùng" });
         }
     } catch (error) {
         console.error('Get user by name error:', error);
-        return res.status(500).json({ message: 'Failed to fetch user' });
+        return res.status(500).json({ message: 'Không thể lấy thông tin người dùng' });
     }
 };
 
@@ -52,13 +52,13 @@ const getUserById = async (req, res) => {
             return res.status(200).json(user);
         }
         
-        return res.status(404).json({ message: "User not found" });
+        return res.status(404).json({ message: "Không tìm thấy người dùng" });
     } catch (error) {
         console.error('Get user by ID error:', error);
         if (error.kind === 'ObjectId') {
-            return res.status(400).json({ message: 'Invalid user ID format' });
+            return res.status(400).json({ message: 'Định dạng ID người dùng không hợp lệ' });
         }
-        return res.status(500).json({ message: 'Failed to fetch user' });
+        return res.status(500).json({ message: 'Không thể lấy thông tin người dùng' });
     }
 };
 
@@ -67,7 +67,7 @@ const getLikedNovels = async (req, res) => {
         const { userId } = req.user;
         const user = await User.findById(userId, 'likedNovels');
         if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+            return res.status(404).json({ message: 'Không tìm thấy người dùng' });
         }
 
         const likedNovelIds = user.likedNovels;
@@ -87,9 +87,9 @@ const getLikedNovels = async (req, res) => {
     } catch (error) {
         console.error('Get liked novels error:', error);
         if (error.kind === 'ObjectId') {
-            return res.status(400).json({ message: 'Invalid user ID format' });
+            return res.status(400).json({ message: 'Định dạng ID người dùng không hợp lệ' });
         }
-        return res.status(500).json({ message: 'Failed to fetch novels' });
+        return res.status(500).json({ message: 'Không thể lấy danh sách truyện đã thích' });
     }
 };
 

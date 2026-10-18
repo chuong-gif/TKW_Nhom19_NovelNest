@@ -9,7 +9,7 @@ const checkNovelOwner = async (req, res, next) => {
         const novelId = req.params.id || req.params.novelId;
         const user = await User.findById(req.user?.userId);
         if (!user) {
-            return res.status(401).json({ msg: "User not found" });
+            return res.status(401).json({ msg: "Không tìm thấy người dùng" });
         }
         if (user.role === 'admin') {
             return next();
@@ -17,17 +17,17 @@ const checkNovelOwner = async (req, res, next) => {
 
         const novel = await Novel.findById(novelId).populate('author');
         if (!novel) {
-            return res.status(404).json({ msg: "Novel not found" });
+            return res.status(404).json({ msg: "Không tìm thấy truyện" });
         }
 
         if (!novel.author || novel.author.user.toString() !== user._id.toString()) {
-            return res.status(403).json({ msg: "Access denied. Not the author of this novel." });
+            return res.status(403).json({ msg: "Từ chối truy cập. Bạn không phải là tác giả của truyện này." });
         }
 
         next();
     } catch (error) {
         console.error("Check novel owner error:", error);
-        return res.status(500).json({ msg: "Server error checking permissions" });
+        return res.status(500).json({ msg: "Lỗi máy chủ khi kiểm tra quyền hạn" });
     }
 };
 
@@ -37,7 +37,7 @@ const checkChapterUploadPermission = async (req, res, next) => {
         const { novelId } = req.params;
         const user = await User.findById(req.user?.userId);
         if (!user) {
-            return res.status(401).json({ msg: "User not found" });
+            return res.status(401).json({ msg: "Không tìm thấy người dùng" });
         }
         if (user.role === 'admin') {
             return next();
@@ -45,17 +45,17 @@ const checkChapterUploadPermission = async (req, res, next) => {
 
         const novel = await Novel.findById(novelId).populate('author');
         if (!novel) {
-            return res.status(404).json({ msg: "Novel not found" });
+            return res.status(404).json({ msg: "Không tìm thấy truyện" });
         }
 
         if (!novel.author || novel.author.user.toString() !== user._id.toString()) {
-            return res.status(403).json({ msg: "Access denied. Not the author of this novel." });
+            return res.status(403).json({ msg: "Từ chối truy cập. Bạn không phải là tác giả của truyện này." });
         }
 
         next();
     } catch (error) {
         console.error("Check chapter upload permission error:", error);
-        return res.status(500).json({ msg: "Server error checking permissions" });
+        return res.status(500).json({ msg: "Lỗi máy chủ khi kiểm tra quyền hạn" });
     }
 };
 
@@ -65,7 +65,7 @@ const checkReviewOwner = async (req, res, next) => {
         const reviewId = req.params.reviewId || req.params.id;
         const user = await User.findById(req.user?.userId);
         if (!user) {
-            return res.status(401).json({ msg: "User not found" });
+            return res.status(401).json({ msg: "Không tìm thấy người dùng" });
         }
         if (user.role === 'admin') {
             return next();
@@ -73,17 +73,17 @@ const checkReviewOwner = async (req, res, next) => {
 
         const review = await Review.findById(reviewId);
         if (!review) {
-            return res.status(404).json({ msg: "Review not found" });
+            return res.status(404).json({ msg: "Không tìm thấy đánh giá" });
         }
 
         if (review.user.toString() !== user._id.toString()) {
-            return res.status(403).json({ msg: "Access denied. Not the owner of this review." });
+            return res.status(403).json({ msg: "Từ chối truy cập. Bạn không phải chủ sở hữu của đánh giá này." });
         }
 
         next();
     } catch (error) {
         console.error("Check review owner error:", error);
-        return res.status(500).json({ msg: "Server error checking permissions" });
+        return res.status(500).json({ msg: "Lỗi máy chủ khi kiểm tra quyền hạn" });
     }
 };
 
@@ -93,7 +93,7 @@ const checkPostOwner = async (req, res, next) => {
         const postId = req.params.id || req.params.postId;
         const user = await User.findById(req.user?.userId);
         if (!user) {
-            return res.status(401).json({ msg: "User not found" });
+            return res.status(401).json({ msg: "Không tìm thấy người dùng" });
         }
         if (user.role === 'admin') {
             return next();
@@ -101,17 +101,17 @@ const checkPostOwner = async (req, res, next) => {
 
         const post = await Post.findById(postId);
         if (!post) {
-            return res.status(404).json({ msg: "Post not found" });
+            return res.status(404).json({ msg: "Không tìm thấy bài viết" });
         }
 
         if (post.user.toString() !== user._id.toString()) {
-            return res.status(403).json({ msg: "Access denied. Not the owner of this post." });
+            return res.status(403).json({ msg: "Từ chối truy cập. Bạn không phải tác giả của bài viết này." });
         }
 
         next();
     } catch (error) {
         console.error("Check post owner error:", error);
-        return res.status(500).json({ msg: "Server error checking permissions" });
+        return res.status(500).json({ msg: "Lỗi máy chủ khi kiểm tra quyền hạn" });
     }
 };
 

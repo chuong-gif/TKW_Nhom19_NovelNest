@@ -7,23 +7,23 @@ const applyForAuthor = async (req, res) => {
         const { penName, bio } = req.body;
 
         if (!userId || !penName || !bio) {
-            return res.status(400).json({ msg: "Pen name and bio are required." });
+            return res.status(400).json({ msg: "Vui lòng nhập đầy đủ bút danh và giới thiệu bản thân." });
         }
 
         // Check if user exists and is not already an author
         const user = await User.findById(userId);
         if (!user) {
-            return res.status(404).json({ msg: "User not found." });
+            return res.status(404).json({ msg: "Không tìm thấy người dùng." });
         }
 
         if (user.role === "author") {
-            return res.status(400).json({ msg: "User is already an author." });
+            return res.status(400).json({ msg: "Người dùng đã là tác giả." });
         }
 
         // Check if penName is already taken
         const existingAuthor = await Author.findOne({ penName });
         if (existingAuthor) {
-            return res.status(400).json({ msg: "Pen name is already taken." });
+            return res.status(400).json({ msg: "Bút danh này đã được sử dụng." });
         }
 
         // Create new author
@@ -45,12 +45,12 @@ const applyForAuthor = async (req, res) => {
         await newAuthor.populate('user', '-password');
 
         return res.status(200).json({ 
-            msg: "You have become an author.", 
+            msg: "Bạn đã đăng ký làm tác giả thành công.", 
             author: newAuthor 
         });
     } catch (error) {
         console.error('Apply for author error:', error);
-        return res.status(500).json({ msg: "Internal server error" });
+        return res.status(500).json({ msg: "Lỗi máy chủ nội bộ" });
     }
 };
 
@@ -63,7 +63,7 @@ const getAuthors = async (req, res) => {
         return res.status(200).json(authors);
     } catch (error) {
         console.error('Get authors error:', error);
-        return res.status(500).json({ msg: "Failed to fetch authors" });
+        return res.status(500).json({ msg: "Không thể lấy danh sách tác giả" });
     }
 };
 
@@ -74,16 +74,16 @@ const getAuthorById = async (req, res) => {
             .populate('novels', 'title description');
 
         if (!author) {
-            return res.status(404).json({ msg: "Author not found" });
+            return res.status(404).json({ msg: "Không tìm thấy tác giả" });
         }
 
         return res.status(200).json(author);
     } catch (error) {
         console.error('Get author by ID error:', error);
         if (error.kind === 'ObjectId') {
-            return res.status(400).json({ msg: 'Invalid author ID format' });
+            return res.status(400).json({ msg: 'Định dạng ID tác giả không hợp lệ' });
         }
-        return res.status(500).json({ msg: "Failed to fetch author" });
+        return res.status(500).json({ msg: "Không thể lấy thông tin tác giả" });
     }
 };
 
@@ -95,16 +95,16 @@ const getAuthorByUserId = async (req, res) => {
             .populate('novels', 'title description');
 
         if (!author) {
-            return res.status(404).json({ msg: "Author not found" });
+            return res.status(404).json({ msg: "Không tìm thấy tác giả" });
         }
 
         return res.status(200).json(author);
     } catch (error) {
         console.error('Get author by user ID error:', error);
         if (error.kind === 'ObjectId') {
-            return res.status(400).json({ msg: 'Invalid user ID format' });
+            return res.status(400).json({ msg: 'Định dạng ID người dùng không hợp lệ' });
         }
-        return res.status(500).json({ msg: "Failed to fetch author" });
+        return res.status(500).json({ msg: "Không thể lấy thông tin tác giả" });
     }
 };
 
